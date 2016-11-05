@@ -81,11 +81,12 @@ public class LogInWindow extends Window {
                 && password.equals("123");
 
         LogInCredentials logInCredentials = new LogInCredentials(username, password);
+        logInCredentials.areValid(true);
 
-        if (isValid) {
+        if (logInCredentials.areValid()) {
 
             // Store the current user in the service session
-            getSession().setAttribute("LogInInfo", logInCredentials.toString());
+            getSession().setAttribute("LogInInfo", logInCredentials);
             getUI().getNavigator().getCurrentView().enter(null);
             this.close();
 

@@ -16,7 +16,7 @@ public abstract class BaseView extends VerticalLayout implements View {
     public BaseView(WebStoreUI ui){
         this.parentUI = ui;
 
-        LogInAndOutComponent = new LogInAndOutComponent();
+        LogInAndOutComponent = new LogInAndOutComponent(parentUI);
 
         viewContent.setSpacing(true);
         super.addComponent(LogInAndOutComponent);
@@ -36,10 +36,14 @@ public abstract class BaseView extends VerticalLayout implements View {
 
     public void RefreshLogInOutComponent(){
         Object logIngInfo = parentUI.session.getAttribute("LogInInfo");
-        if (logIngInfo != ""){
+        LogInCredentials lc = (LogInCredentials)logIngInfo;
+
+
+
+        if (lc.areValid()){
             //means we're already logged in
             LogInAndOutComponent.changeLogInButtonText("LOG OUT");
-            LogInAndOutComponent.changeWelcomeText("Welcome " + getSession().getAttribute("LogInInfo").toString().split(" ")[0]);
+            LogInAndOutComponent.changeWelcomeText("Welcome " + lc.getName());
         }
         else{
             LogInAndOutComponent.changeLogInButtonText("LOG IN");

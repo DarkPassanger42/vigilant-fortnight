@@ -7,14 +7,11 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -32,7 +29,6 @@ public class WebStoreUI extends UI {
     protected Navigator nav;
     protected View myHomeView;
     protected View computersView;
-    protected View logInView;
 
     protected MySQLAccess mySQLAccess;
     VaadinSession session;
@@ -53,7 +49,8 @@ public class WebStoreUI extends UI {
 
         //initially no password
         session = this.getSession();
-        session.setAttribute("LogInInfo","");
+        session.setAttribute("LogInInfo",new LogInCredentials("",""));
+        session.setAttribute("ShoppingCart", new ShoppingCart());
 
         nav = new Navigator(this, this);
 
@@ -62,7 +59,6 @@ public class WebStoreUI extends UI {
 
         computersView = new ComputersView(this);
         nav.addView(VIEW_COMPUTERS,computersView);
-
 
     }
 

@@ -1,9 +1,5 @@
 package WebStore;
 
-import com.vaadin.event.MouseEvents;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.Sizeable;
 import com.vaadin.ui.*;
 
 public class LogInAndOutComponent extends CustomComponent implements Button.ClickListener{
@@ -12,9 +8,10 @@ public class LogInAndOutComponent extends CustomComponent implements Button.Clic
     protected Button cart;
 
     protected Label infoLabel;
+    protected WebStoreUI parentUI;
 
-    public LogInAndOutComponent(){
-
+    public LogInAndOutComponent(WebStoreUI ui){
+        parentUI = ui;
 
         HorizontalLayout components = new HorizontalLayout();
         logInAndOutButton = new Button("Log In",this);
@@ -44,7 +41,7 @@ public class LogInAndOutComponent extends CustomComponent implements Button.Clic
         if (clickEvent.getComponent().getCaption().equals("LOG OUT")){
 
             //erase session data
-            getSession().setAttribute("LogInInfo","");
+            getSession().setAttribute("LogInInfo",new LogInCredentials("",""));
             getUI().getNavigator().getCurrentView().enter(null);
         }
         else if (clickEvent.getComponent().getCaption().equals("LOG IN")){
@@ -53,6 +50,28 @@ public class LogInAndOutComponent extends CustomComponent implements Button.Clic
             logInWindow.setWidth("50%");
             logInWindow.center();
             UI.getCurrent().addWindow(logInWindow);
+        }
+        else if(clickEvent.getComponent().getCaption().equals("CART")){
+            Object logInInfo = getSession().getAttribute("LogInInfo");
+            LogInCredentials lc = (LogInCredentials)logInInfo;
+            if (lc.areValid()){
+                //parentUI.nav.navigateTo(parentUI.VIEW_CART);
+                CartWindow cartWindow = new CartWindow(parentUI);
+                cartWindow.setHeight("650px");
+                cartWindow.setWidth("650px");
+                cartWindow.center();
+                UI.getCurrent().addWindow(cartWindow);
+                cartWindow.focus();
+            }
+            else{
+                Notification.show("Must be logged to view cart",
+                        "",
+                        Notification.Type.WARNING_MESSAGE);
+            }
+
+        }
+        else{
+            //do nothing
         }
     }
 

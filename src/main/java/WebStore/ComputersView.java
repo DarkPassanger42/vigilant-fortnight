@@ -1,9 +1,7 @@
 package WebStore;
 
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
+import com.vaadin.ui.*;
 
 
 public class ComputersView extends BaseView {
@@ -13,19 +11,48 @@ public class ComputersView extends BaseView {
 
         //placeholder layout for the moment...
 
+        Panel computersPanel = new Panel();
         HorizontalLayout computersLayout = new HorizontalLayout();
-        computersLayout.setWidth("100%");
-        computersLayout.setHeight("200");
-        computersLayout.addComponent(new Label("PC1"));
+        computersLayout.setWidthUndefined();
         computersLayout.setSpacing(true);
-        addComponent(computersLayout);
 
+        //-----------will be from DB----------
+        for (int i = 0; i < 10; i++){
+            Panel panel = new Panel("PCs");
+            FormLayout form = new FormLayout();
+            form.setMargin(true);
+            form.addComponent(new Label("PC"));
+            panel.setContent(form);
+            computersLayout.addComponent(panel);
+        }
+        //---------------------------------------
+
+        computersPanel.setContent(computersLayout);
+        computersPanel.setWidth("100%");
+        computersPanel.setHeight("200px");
+        addComponent(computersPanel);
+
+
+        Panel componentsPanel = new Panel();
         HorizontalLayout componentsLayout = new HorizontalLayout();
-        componentsLayout.setWidth("100%");
-        componentsLayout.setHeight("200");
-        componentsLayout.addComponent(new Label("component1"));
+        componentsLayout.setWidthUndefined();
         componentsLayout.setSpacing(true);
-        addComponent(componentsLayout);
+
+        //-----------will be from DB----------
+        for (int i = 0; i < 10; i++){
+            Panel panel = new Panel("PCs");
+            FormLayout form = new FormLayout();
+            form.setMargin(true);
+            form.addComponent(new Label("PC"));
+            panel.setContent(form);
+            componentsLayout.addComponent(panel);
+        }
+        //---------------------------------------
+
+        componentsPanel.setContent(componentsLayout);
+        componentsPanel.setWidth("100%");
+        componentsPanel.setHeight("200px");
+        addComponent(componentsPanel);
 
         HorizontalLayout electronicsLayout = new HorizontalLayout();
         electronicsLayout.setWidth("100%");

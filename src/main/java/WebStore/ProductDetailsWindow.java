@@ -30,8 +30,24 @@ public class ProductDetailsWindow extends Window {
         buttonLayout.addComponent(ok);
 
         Button addToCart = new Button("ADD TO CART");
-        ok.addClickListener(new Button.ClickListener() {
+        addToCart.addClickListener(new Button.ClickListener() {
             public void buttonClick(Button.ClickEvent event) {
+
+                //first make sure user is logged in
+                Object loginInfo = getSession().getAttribute("LogInInfo");
+                LogInCredentials lc = (LogInCredentials)loginInfo;
+                if(lc.areValid()){
+                    //get current list of products in the cart
+                    ShoppingCart currentShoppingCart = (ShoppingCart)getSession().getAttribute("ShoppingCart");
+                    currentShoppingCart.addProduct(product);
+                    getSession().setAttribute("ShoppingCart", currentShoppingCart);
+                }
+                else{
+                    Notification.show("Must be logged in to add to cart",
+                            "",
+                            Notification.Type.WARNING_MESSAGE);
+                }
+
                 close(); // Close the sub-window
             }
         });
@@ -41,4 +57,6 @@ public class ProductDetailsWindow extends Window {
 
         setContent(content);
     }
+
+
 }
