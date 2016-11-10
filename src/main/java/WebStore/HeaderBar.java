@@ -26,19 +26,19 @@ public class HeaderBar extends VerticalLayout {
 
         MenuBar.MenuItem home = mainMenu.addItem("HOME",null ,goHome);
 
-        MenuBar.MenuItem computers = mainMenu.addItem("Computers",null, null);
-        computers.addItem("PC", null, goToPc);
-        computers.addItem("Laptop", null, null);
-        computers.addItem("Tablet", null, null);
+        MenuBar.MenuItem computers = mainMenu.addItem("Computers",null, goToPc);
+//        computers.addItem("PC", null, goToPc);
+//        computers.addItem("Laptop", null, null);
+//        computers.addItem("Tablet", null, null);
 
         MenuBar.MenuItem components = mainMenu.addItem("Components",null, null);
-        components.addItem("Storage",null,null);
-        components.addItem("Memory", null, null);
-        components.addItem("Processors", null, null);
+//        components.addItem("Storage",null,null);
+//        components.addItem("Memory", null, null);
+//        components.addItem("Processors", null, null);
 
         MenuBar.MenuItem electronics = mainMenu.addItem("Electronics",null, null);
-        electronics.addItem("TV/Video",null,null);
-        electronics.addItem("Audio", null, null);
+//        electronics.addItem("TV/Video",null,null);
+//        electronics.addItem("Audio", null, null);
 
         menuBarLayout.addComponent(mainMenu);
 

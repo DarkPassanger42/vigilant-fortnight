@@ -1,6 +1,9 @@
 package WebStore;
 
 import com.vaadin.event.MouseEvents;
+import com.vaadin.server.ClassResource;
+import com.vaadin.server.ExternalResource;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 
 import java.util.ArrayList;
@@ -31,13 +34,20 @@ public class HomeViewPanelCollection extends CustomComponent implements MouseEve
             Product product = productList.get(randomProd);
 
 
-            Panel panel = new Panel(product.getDescription());
+            Panel panel = new Panel(product.getName());
             panel.addClickListener(this);
             panel.setId(product.getID());
 
+
+            final ExternalResource er = new ExternalResource(product.getImage());
+            Image image = new Image(null, er);
+            image.setHeight("200px");
+            image.setWidth("200px");
+
+
             FormLayout form = new FormLayout();
             form.setMargin(true);
-            form.addComponent(new Label("This is the actual products: " + i));
+            form.addComponent(image);
 
             panel.setContent(form);
 

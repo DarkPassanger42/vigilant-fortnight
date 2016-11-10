@@ -45,23 +45,96 @@ public class MySQLAccess {
         try {
             resultSet = statement.executeQuery("select * from products");
         while (resultSet.next()) {
-            String id = resultSet.getString("ID");
-            String category = resultSet.getString("Category");
-            String subcategory = resultSet.getString("Subcategory");
-            String name = resultSet.getString("Name");
-            String description = resultSet.getString("Description");
-            String price = resultSet.getString("Price");
-            //could probably add quantity...
-            Product product = new Product(id, category, subcategory, name, description, price);
-            products.add(product);
+            extractor(resultSet, products);
         }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        finally {
-            close();
-        }
+//        finally {
+//            close();
+//        }
         return products;
+    }
+
+    public ArrayList<Product> getCompProducts() {
+        ResultSet resultSet = null;
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            resultSet = statement.executeQuery("select * from products where Category = 'COMP'");
+            while (resultSet.next()) {
+                extractor(resultSet, products);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        finally {
+//            close();
+//        }
+        return products;
+    }
+
+    public ArrayList<Product> getCompPCProducts() {
+        ResultSet resultSet = null;
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            resultSet = statement.executeQuery("select * from products where Category = 'COMP' && Subcategory = 'Desktop'");
+            while (resultSet.next()) {
+                extractor(resultSet, products);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        finally {
+//            close();
+//        }
+        return products;
+    }
+
+    public ArrayList<Product> getCompLaptopProducts() {
+        ResultSet resultSet = null;
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            resultSet = statement.executeQuery("select * from products where Category = 'COMP' && Subcategory = 'Laptop'");
+            while (resultSet.next()) {
+                extractor(resultSet, products);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        finally {
+//            close();
+//        }
+        return products;
+    }
+
+    public ArrayList<Product> getCompTabletProducts() {
+        ResultSet resultSet = null;
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            resultSet = statement.executeQuery("select * from products where Category = 'COMP' && Subcategory = 'Tablet'");
+            while (resultSet.next()) {
+                extractor(resultSet, products);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        finally {
+//            close();
+//        }
+        return products;
+    }
+
+    private void extractor(ResultSet resultSet, ArrayList<Product> products) throws SQLException {
+        String id = resultSet.getString("ID");
+        String category = resultSet.getString("Category");
+        String subcategory = resultSet.getString("Subcategory");
+        String name = resultSet.getString("Name");
+        String description = resultSet.getString("Description");
+        String price = resultSet.getString("Price");
+        String imageLocation = resultSet.getString("ImageLocation");
+        //could probably add quantity...
+        Product product = new Product(id, category, subcategory, name, description, price, imageLocation);
+        products.add(product);
     }
 
     private void close() {

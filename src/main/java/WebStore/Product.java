@@ -10,15 +10,26 @@ public class Product {
     private String Name;
     private String Description;
     private String Price;
+    private String Image;
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String image) {
+        Image = image;
+    }
 
     public Product(String ID, String Category, String Subcategory,
-                   String Name, String Description, String Price){
+                   String Name, String Description, String Price, String Image){
         this.ID = ID;
         this.Category = Category;
         this.Subcategory = Subcategory;
         this.Name = Name;
         this.Description = Description;
         this.Price = Price;
+        this.Image = Image;
+
     }
 
     public Product(){

@@ -1,6 +1,7 @@
 package WebStore;
 
 
+import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.*;
 
 
@@ -13,9 +14,18 @@ public class ProductDetailsWindow extends Window {
 
         // Some basic content for the window
         HorizontalLayout buttonLayout = new HorizontalLayout();
+
         VerticalLayout content = new VerticalLayout();
         content.addComponent(new Label(product.getDescription()));
         content.addComponent(new Label(product.getName()));
+
+        final ExternalResource er = new ExternalResource(product.getImage());
+        Image image = new Image(null, er);
+        image.setHeight("500px");
+        image.setWidth("500px");
+
+        content.addComponent(image);
+
         content.setMargin(true);
 
         // Disable the close button
