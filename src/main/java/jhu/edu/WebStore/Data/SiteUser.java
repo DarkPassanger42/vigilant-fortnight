@@ -1,4 +1,7 @@
-package WebStore;
+package jhu.edu.WebStore.Data;
+
+import jhu.edu.WebStore.Data.LogInCredentials;
+import jhu.edu.WebStore.Data.Product;
 
 import java.util.ArrayList;
 
@@ -9,8 +12,19 @@ public class SiteUser {
     private String Name;
     private String Address;
     private String CreditCard;
-    private ArrayList<Product> PurchasedItems;
-    private LogInCredentials LogInCredentials;
+    private ShoppingCart PurchasedItems;
+    private jhu.edu.WebStore.Data.LogInCredentials LogInCredentials;
+
+    public SiteUser(String id, String name, String address, String creditCardInfo, ShoppingCart purchasedItems,
+                    LogInCredentials logInCredentials){
+        this.ID = id;
+        this.Name = name;
+        this.Address = address;
+        this.CreditCard = creditCardInfo;
+
+        this.PurchasedItems = purchasedItems;
+        this.LogInCredentials = logInCredentials;
+    }
 
     public LogInCredentials getLogInCredentials() {
         return LogInCredentials;
@@ -48,11 +62,11 @@ public class SiteUser {
         CreditCard = creditCard;
     }
 
-    public ArrayList<Product> getPurchasedItems() {
+    public ShoppingCart getPurchasedItems() {
         return PurchasedItems;
     }
 
-    public void setPurchasedItems(ArrayList<Product> purchasedItems) {
+    public void setPurchasedItems(ShoppingCart purchasedItems) {
         PurchasedItems = purchasedItems;
     }
 

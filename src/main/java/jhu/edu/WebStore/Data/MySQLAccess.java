@@ -1,4 +1,4 @@
-package WebStore;
+package jhu.edu.WebStore.Data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 
 
 public class MySQLAccess {
@@ -45,7 +44,7 @@ public class MySQLAccess {
         try {
             resultSet = statement.executeQuery("select * from products");
         while (resultSet.next()) {
-            extractor(resultSet, products);
+            productDataExtractor(resultSet, products);
         }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,22 +55,6 @@ public class MySQLAccess {
         return products;
     }
 
-    public ArrayList<Product> getCompProducts() {
-        ResultSet resultSet = null;
-        ArrayList<Product> products = new ArrayList<>();
-        try {
-            resultSet = statement.executeQuery("select * from products where Category = 'COMP'");
-            while (resultSet.next()) {
-                extractor(resultSet, products);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-//        finally {
-//            close();
-//        }
-        return products;
-    }
 
     public ArrayList<Product> getCompPCProducts() {
         ResultSet resultSet = null;
@@ -79,7 +62,7 @@ public class MySQLAccess {
         try {
             resultSet = statement.executeQuery("select * from products where Category = 'COMP' && Subcategory = 'Desktop'");
             while (resultSet.next()) {
-                extractor(resultSet, products);
+                productDataExtractor(resultSet, products);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -96,7 +79,7 @@ public class MySQLAccess {
         try {
             resultSet = statement.executeQuery("select * from products where Category = 'COMP' && Subcategory = 'Laptop'");
             while (resultSet.next()) {
-                extractor(resultSet, products);
+                productDataExtractor(resultSet, products);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -113,7 +96,7 @@ public class MySQLAccess {
         try {
             resultSet = statement.executeQuery("select * from products where Category = 'COMP' && Subcategory = 'Tablet'");
             while (resultSet.next()) {
-                extractor(resultSet, products);
+                productDataExtractor(resultSet, products);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -124,7 +107,32 @@ public class MySQLAccess {
         return products;
     }
 
-    private void extractor(ResultSet resultSet, ArrayList<Product> products) throws SQLException {
+    public Product getProductById(String productId) {
+        ResultSet resultSet = null;
+        Product product = null;
+        try {
+            resultSet = statement.executeQuery("select * from products where ID = '"+productId+"'");
+
+            String id = resultSet.getString("ID");
+            String category = resultSet.getString("Category");
+            String subcategory = resultSet.getString("Subcategory");
+            String name = resultSet.getString("Name");
+            String description = resultSet.getString("Description");
+            String price = resultSet.getString("Price");
+            String imageLocation = resultSet.getString("ImageLocation");
+            //could probably add quantity...
+            product = new Product(id, category, subcategory, name, description, price, imageLocation);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        finally {
+//            close();
+//        }
+        return product;
+    }
+
+    private void productDataExtractor(ResultSet resultSet, ArrayList<Product> products) throws SQLException {
         String id = resultSet.getString("ID");
         String category = resultSet.getString("Category");
         String subcategory = resultSet.getString("Subcategory");
@@ -136,6 +144,54 @@ public class MySQLAccess {
         Product product = new Product(id, category, subcategory, name, description, price, imageLocation);
         products.add(product);
     }
+
+    private SiteUser getUserInfo(String userID){
+
+        ResultSet resultSet = null;
+        SiteUser siteUser = null;
+
+        try {
+            resultSet = statement.executeQuery("select * from siteUser where ID = '"+userID+"'");
+
+            String id = resultSet.getString("ID");
+            String password = resultSet.getString("Password");
+
+            String name = resultSet.getString("name");
+            String address = resultSet.getString("address");
+            String creditCardInfo = resultSet.getString("creditCardInfo");
+
+            String purchasedItems = resultSet.getString("purchasedItems");
+
+            //alternatively (a better way) is to do a table here
+            //rather than a csv product list
+            ShoppingCart cart = new ShoppingCart();
+            for (String productID : purchasedItems.split(",")) {
+                cart.addProduct(getProductById(productID.trim()));
+            }
+
+            //user should have login and password
+            //this probably needs some work
+            LogInCredentials logIn = new LogInCredentials(id, password);
+            logIn.areValid(true);
+
+
+            siteUser = new SiteUser(id, name, address, creditCardInfo, cart, logIn);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        finally {
+//            close();
+//        }
+        return siteUser;
+    }
+
+    private ShoppingCart getCart (String userID){
+        //TODO implement....
+        return null;
+    }
+
+
 
     private void close() {
         try {

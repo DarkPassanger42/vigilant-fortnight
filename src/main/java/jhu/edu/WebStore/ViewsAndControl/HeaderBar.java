@@ -1,9 +1,7 @@
-package WebStore;
+package jhu.edu.WebStore.ViewsAndControl;
 
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
-
+import jhu.edu.WebStore.WebStoreUI;
 
 
 public class HeaderBar extends VerticalLayout {

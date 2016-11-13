@@ -1,10 +1,10 @@
-package WebStore;
+package jhu.edu.WebStore.ViewsAndControl;
 
 import com.vaadin.event.MouseEvents;
-import com.vaadin.server.ClassResource;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
+import jhu.edu.WebStore.Data.Product;
+import jhu.edu.WebStore.WindowsAndControl.ProductDetailsWindow;
 
 import java.util.ArrayList;
 import java.util.Random;

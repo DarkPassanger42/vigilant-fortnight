@@ -34,10 +34,18 @@ CREATE TABLE IF NOT EXISTS `webstoredb`.`Products` (
 -- -----------------------------------------------------
 -- Table `WebStoreDB`.`Users`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `webstoredb`.`Users` (
+CREATE TABLE IF NOT EXISTS `webstoredb`.`siteUser` (
   `ID` INT NOT NULL,
-  `Name` VARCHAR(45) NULL,
-  `Category` VARCHAR(45) NULL,
+  `Password` VARCHAR(45) NULL,
+
+  `name` VARCHAR(45) NULL,
+  -- email will be the user name
+  `email` VARCHAR(45) NULL,
+  `address` VARCHAR(45) NULL,
+  `creditCardInfo` VARCHAR(45) NULL,
+  -- normally purchasedItems should probably be its' own table
+  -- form simplicity this will just be a csv list
+  `purchasedItems` VARCHAR(200) NULL,
     PRIMARY KEY (`ID`));
 
 
@@ -46,13 +54,25 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
+-- Add some users
+-- -----------------------------------------------------
+INSERT INTO `webstoredb`.`siteUser` (`ID`, `Password`,`name`,`email`, `address`,`creditCardInfo`,`purchasedItems`)
+VALUES('1','111', 'johnny', 'johnny@test.com','some address', '1234-1234-1234-1234', '1,2,5');
+
+INSERT INTO `webstoredb`.`siteUser` (`ID`, `Password`,`name`, `email`, `address`,`creditCardInfo`,`purchasedItems`)
+VALUES('2','222', 'johnny2', 'johnny2@test.com','some address', '1234-1234-1234-5555', '10');
+
+INSERT INTO `webstoredb`.`siteUser` (`ID`, `Password`,`name`, `email`, `address`,`creditCardInfo`,`purchasedItems`)
+VALUES('3','123', 'joe', 'joe@test.com', 'some address', '1234-1234-1234-5555', '10');
+
+-- -----------------------------------------------------
 -- Add data
 -- -----------------------------------------------------
 -- PC
 INSERT INTO `webstoredb`.`products` (`ID`, `Name`, `Category`, `Subcategory`, `Description`, `Price`, `ImageLocation`) 
 VALUES ('1', 'DELL Desktop Computer OptiPlex 5040', 'COMP', 'Desktop', 
-		'Intel Core i7 6th Gen 6700 (3.4 GHz),8 GB DDR3L 500 GB HDD,Windows 7 Professional 64-Bit (Includes Windows 10 Pro License), No Screen, AMD Radeon R5 340X 2 GB', 
-		'720.99', 'http://images10.newegg.com/ProductImageCompressAll1280/83-159-414_R01.jpg?w=660&h=500');
+    'Intel Core i7 6th Gen 6700 (3.4 GHz),8 GB DDR3L 500 GB HDD,Windows 7 Professional 64-Bit (Includes Windows 10 Pro License), No Screen, AMD Radeon R5 340X 2 GB', 
+    '720.99', 'http://images10.newegg.com/ProductImageCompressAll1280/83-159-414_R01.jpg?w=660&h=500');
 
 INSERT INTO `webstoredb`.`products` (`ID`, `Name`, `Category`, `Subcategory`, `Description`, `Price`, `ImageLocation`) 
 VALUES ('2', 'Lenovo Desktop Computer IdeaCentre 300-20ish', 'COMP', 'Desktop', 

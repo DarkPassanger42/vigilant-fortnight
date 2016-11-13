@@ -1,6 +1,10 @@
-package WebStore;
+package jhu.edu.WebStore.ViewsAndControl;
 
 import com.vaadin.ui.*;
+import jhu.edu.WebStore.Data.LogInCredentials;
+import jhu.edu.WebStore.WindowsAndControl.LogInWindow;
+import jhu.edu.WebStore.WebStoreUI;
+import jhu.edu.WebStore.WindowsAndControl.CartWindow;
 
 public class LogInAndOutComponent extends CustomComponent implements Button.ClickListener{
 

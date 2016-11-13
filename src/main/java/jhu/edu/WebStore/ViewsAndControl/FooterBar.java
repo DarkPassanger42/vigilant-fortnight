@@ -1,6 +1,7 @@
-package WebStore;
+package jhu.edu.WebStore.ViewsAndControl;
 
 import com.vaadin.ui.*;
+import jhu.edu.WebStore.WebStoreUI;
 
 
 public class FooterBar extends VerticalLayout {

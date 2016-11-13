@@ -1,23 +1,27 @@
-package WebStore;
+package jhu.edu.WebStore.ViewsAndControl;
 
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.*;
+import jhu.edu.WebStore.Data.Product;
+import jhu.edu.WebStore.WindowsAndControl.ProductDetailsWindow;
+import jhu.edu.WebStore.WebStoreUI;
 
 import java.util.ArrayList;
 
-/**
- * Created by andri on 11/9/2016.
- */
-public class TabletPanelColletion extends CustomComponent implements MouseEvents.ClickListener{
+public abstract class BasePanelCollection extends CustomComponent implements MouseEvents.ClickListener {
 
     WebStoreUI parentUI;
 
-    ArrayList<Product> allComputerProducts;
+    private ArrayList<Product> allComputerProducts;
+    protected ArrayList<Product> specificProducts;
 
-    public TabletPanelColletion(WebStoreUI ui){
-
+    public BasePanelCollection(WebStoreUI ui){
         parentUI = ui;
+
+    }
+
+    public void buildPanelCollection(){
 
         allComputerProducts = parentUI.mySQLAccess.getProducts();
 
@@ -27,17 +31,16 @@ public class TabletPanelColletion extends CustomComponent implements MouseEvents
         tabletsLayout.setSpacing(true);
         tabletsLayout.setMargin(true);
 
-        ArrayList<Product> tablets = parentUI.mySQLAccess.getCompTabletProducts();
 
-        for (Product tablet : tablets){
-            Panel panel = new Panel(tablet.getName());
+        for (Product specificProduct : specificProducts){
+            Panel panel = new Panel(specificProduct.getName());
             panel.setWidth("250px");
             panel.setHeight("250px");
-            panel.setId(tablet.getID());
+            panel.setId(specificProduct.getID());
             panel.addClickListener(this);
 
             FormLayout form = new FormLayout();
-            final ExternalResource er = new ExternalResource(tablet.getImage());
+            final ExternalResource er = new ExternalResource(specificProduct.getImage());
             Image image = new Image(null, er);
             image.setHeight("100px");
             image.setWidth("100px");
@@ -47,7 +50,7 @@ public class TabletPanelColletion extends CustomComponent implements MouseEvents
             tabletsLayout.addComponent(panel);
 
             //debug
-            System.out.println("adding computers... id:"+ tablet.getID() + " name: " + tablet.getName());
+            System.out.println("adding computers... id:"+ specificProduct.getID() + " name: " + specificProduct.getName());
         }
 
         computersPanel.setContent(tabletsLayout);
@@ -74,7 +77,5 @@ public class TabletPanelColletion extends CustomComponent implements MouseEvents
 
         ProductDetailsWindow detailsWindow = new ProductDetailsWindow(selectedProduct);
         UI.getCurrent().addWindow(detailsWindow);
-
     }
-
 }

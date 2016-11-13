@@ -1,12 +1,12 @@
-package WebStore;
+package jhu.edu.WebStore.WindowsAndControl;
 
 
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
-import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
+import jhu.edu.WebStore.Data.LogInCredentials;
 
 
 public class LogInWindow extends Window {

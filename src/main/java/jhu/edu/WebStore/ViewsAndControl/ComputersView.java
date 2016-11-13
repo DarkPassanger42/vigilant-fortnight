@@ -1,10 +1,7 @@
-package WebStore;
+package jhu.edu.WebStore.ViewsAndControl;
 
-import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.ui.*;
-
-import java.util.ArrayList;
+import jhu.edu.WebStore.WebStoreUI;
 
 
 public class ComputersView extends BaseView {
@@ -23,8 +20,8 @@ public class ComputersView extends BaseView {
         LaptopPanelCollection laptopPanelCollection = new LaptopPanelCollection(parentUI);
         addComponent(laptopPanelCollection);
 
-        TabletPanelColletion tabletPanelColletion = new TabletPanelColletion(parentUI);
-        addComponent(tabletPanelColletion);
+        TabletPanelCollection tabletPanelCollection = new TabletPanelCollection(parentUI);
+        addComponent(tabletPanelCollection);
     }
 
     @Override

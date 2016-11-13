@@ -1,8 +1,11 @@
-package WebStore;
+package jhu.edu.WebStore.WindowsAndControl;
 
 
 import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.*;
+import jhu.edu.WebStore.Data.LogInCredentials;
+import jhu.edu.WebStore.Data.Product;
+import jhu.edu.WebStore.Data.ShoppingCart;
 
 
 public class ProductDetailsWindow extends Window {
@@ -51,14 +54,18 @@ public class ProductDetailsWindow extends Window {
                     ShoppingCart currentShoppingCart = (ShoppingCart)getSession().getAttribute("ShoppingCart");
                     currentShoppingCart.addProduct(product);
                     getSession().setAttribute("ShoppingCart", currentShoppingCart);
+                    close(); // Close the sub-window
+                    Notification.show("Item has been added to cart",
+                            "",
+                            Notification.Type.HUMANIZED_MESSAGE);
                 }
                 else{
+                    close(); // Close the sub-window
                     Notification.show("Must be logged in to add to cart",
                             "",
                             Notification.Type.WARNING_MESSAGE);
                 }
 
-                close(); // Close the sub-window
             }
         });
         buttonLayout.addComponent(addToCart);

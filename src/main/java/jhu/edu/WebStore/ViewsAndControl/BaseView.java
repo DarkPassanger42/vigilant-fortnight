@@ -1,9 +1,11 @@
-package WebStore;
+package jhu.edu.WebStore.ViewsAndControl;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
+import jhu.edu.WebStore.*;
+import jhu.edu.WebStore.Data.LogInCredentials;
 
 
 public abstract class BaseView extends VerticalLayout implements View {
@@ -11,7 +13,7 @@ public abstract class BaseView extends VerticalLayout implements View {
     protected VerticalLayout viewContent = new VerticalLayout();
     protected WebStoreUI parentUI;
 
-    WebStore.LogInAndOutComponent LogInAndOutComponent;
+    jhu.edu.WebStore.ViewsAndControl.LogInAndOutComponent LogInAndOutComponent;
 
     public BaseView(WebStoreUI ui){
         this.parentUI = ui;

@@ -1,24 +1,28 @@
-package WebStore;
+package jhu.edu.WebStore.Data;
 
 
 public class LogInCredentials {
 
-    private String name;
+    private String id;
     private String password;
     private boolean areValid;
 
-    public LogInCredentials(String Name, String Password){
-        this.name = Name;
+    public LogInCredentials(String ID, String Password){
+        this.id = ID;
         this.password = Password;
         areValid = false;
     }
 
     public String getName(){
-        return name;
+        return id;
     }
 
     public String getPassword(){
         return password;
+    }
+
+    public String getId(){
+        return id;
     }
 
     public boolean areValid(){
@@ -32,7 +36,7 @@ public class LogInCredentials {
 
     @Override
     public String toString() {
-        return name +" "+ password;
+        return id +" "+ password;
     }
 
 

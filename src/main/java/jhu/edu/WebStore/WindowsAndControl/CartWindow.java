@@ -1,10 +1,11 @@
-package WebStore;
+package jhu.edu.WebStore.WindowsAndControl;
 
 import com.vaadin.data.Item;
 import com.vaadin.event.FieldEvents;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
+import jhu.edu.WebStore.Data.Product;
+import jhu.edu.WebStore.Data.ShoppingCart;
+import jhu.edu.WebStore.WebStoreUI;
 
 
 /**

@@ -1,4 +1,4 @@
-package WebStore;
+package jhu.edu.WebStore;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -7,11 +7,15 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
+import jhu.edu.WebStore.Data.LogInCredentials;
+import jhu.edu.WebStore.Data.MySQLAccess;
+import jhu.edu.WebStore.Data.ShoppingCart;
+import jhu.edu.WebStore.ViewsAndControl.ComputersView;
+import jhu.edu.WebStore.ViewsAndControl.HomeView;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -26,12 +30,13 @@ public class WebStoreUI extends UI {
 
     public VaadinRequest vaadinRequest;
 
-    protected Navigator nav;
+    public Navigator nav;
     protected View myHomeView;
     protected View computersView;
 
-    protected MySQLAccess mySQLAccess;
-    VaadinSession session;
+    //normally these probably should probably be private with get/set
+    public MySQLAccess mySQLAccess;
+    public VaadinSession session;
 
     final public static String VIEW_STORE_HOME = "";
     final public static String VIEW_COMPUTERS = "computers";
@@ -40,6 +45,7 @@ public class WebStoreUI extends UI {
     protected void init(VaadinRequest vaadinRequest) {
         this.vaadinRequest = vaadinRequest;
 
+        //TODO currently connection is opened, but never closed, need to close it somewhere
         mySQLAccess = new MySQLAccess();
         try {
             mySQLAccess.readDataBase();
@@ -60,11 +66,14 @@ public class WebStoreUI extends UI {
         computersView = new ComputersView(this);
         nav.addView(VIEW_COMPUTERS,computersView);
 
+        //TODO add other views here
+
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = WebStoreUI.class, productionMode = false)
     public static class MyUIServlet extends VaadinServlet {
     }
+
 
 }

@@ -1,13 +1,11 @@
-package WebStore;
+package jhu.edu.WebStore.ViewsAndControl;
 
-import com.vaadin.event.MouseEvents;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.ui.*;
+import jhu.edu.WebStore.WebStoreUI;
 
-import java.sql.SQLException;
 
-
-public class HomeView extends BaseView{
+public class HomeView extends BaseView {
 
     WebStoreUI parentUI;
 

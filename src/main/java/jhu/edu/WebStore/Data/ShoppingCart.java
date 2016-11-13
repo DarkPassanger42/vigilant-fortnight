@@ -1,4 +1,6 @@
-package WebStore;
+package jhu.edu.WebStore.Data;
+
+import jhu.edu.WebStore.Data.Product;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package WebStore;
+package jhu.edu.WebStore.Data;
 
 import sun.security.krb5.internal.crypto.Des;
 
