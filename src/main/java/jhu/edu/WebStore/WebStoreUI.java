@@ -15,6 +15,7 @@ import jhu.edu.WebStore.Data.LogInCredentials;
 import jhu.edu.WebStore.Data.MySQLAccess;
 import jhu.edu.WebStore.Data.ShoppingCart;
 import jhu.edu.WebStore.ViewsAndControl.ComputersView;
+import jhu.edu.WebStore.ViewsAndControl.ConfirmationView;
 import jhu.edu.WebStore.ViewsAndControl.HomeView;
 
 /**
@@ -33,6 +34,7 @@ public class WebStoreUI extends UI {
     public Navigator nav;
     protected View myHomeView;
     protected View computersView;
+    protected View confirmationView;
 
     //normally these probably should probably be private with get/set
     public MySQLAccess mySQLAccess;
@@ -40,6 +42,7 @@ public class WebStoreUI extends UI {
 
     final public static String VIEW_STORE_HOME = "";
     final public static String VIEW_COMPUTERS = "computers";
+    final public static String VIEW_CONFIRMATION = "confirmation";
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -65,6 +68,9 @@ public class WebStoreUI extends UI {
 
         computersView = new ComputersView(this);
         nav.addView(VIEW_COMPUTERS,computersView);
+
+        confirmationView = new ConfirmationView(this);
+        nav.addView(VIEW_CONFIRMATION,confirmationView);
 
         //TODO add other views here
 

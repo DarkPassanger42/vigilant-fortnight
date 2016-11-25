@@ -54,15 +54,33 @@ public class CartWindow extends Window {
         buttonLayout.setWidth("100%");
 
         buttonLayout.addComponent(continueButton);
+        continueButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
 
-        buttonLayout.addComponent(returnButton);
+                parentUI.nav.navigateTo(parentUI.VIEW_CONFIRMATION);
+                close();
+            }
+        });
+
+        buttonLayout.addComponent(returnButton);    //continue shopping
+        returnButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+
+                //update session variable for cart, just in case...
+                parentUI.getSession().setAttribute("ShoppingCart", cart);
+
+                //and exit...
+                close();
+            }
+        });
 
         buttonLayout.addComponent(removeItems);
         removeItems.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 removeProduct();
-                //updateTable();
             }
         });
 
@@ -87,17 +105,16 @@ public class CartWindow extends Window {
         table.setContainerDataSource(cartItemsContainer);
 
 
+
         table.setWidth("100%");
         table.setHeight("550px");
         tableLayout.addComponent(table);
         cartWindowLayout.addComponent(tableLayout);
-        //cartWindowLayout.setComponentAlignment(table, Alignment.MIDDLE_CENTER);
 
-        //cartWindowLayout.addComponent(table,1,1,4,4);
         cartWindowLayout.addComponent(buttonLayout);
-        //cartWindowLayout.setComponentAlignment(buttonLayout, Alignment.MIDDLE_CENTER);
 
         table.setImmediate(true);
+        table.setEnabled(true);
         setContent(cartWindowLayout);
     }
 
@@ -105,9 +122,16 @@ public class CartWindow extends Window {
     //from cart and update UI table
     private void removeProduct() {
         if(cart != null){
+
+            //cannot find a better way to do this...
+
             cart.removeProduct(productToRemove);    //-actual ID of the product, removes it from the list, not container
 
-            cartItemsContainer = cart.getCartContainer();
+            //update session variable for cart
+            parentUI.getSession().setAttribute("ShoppingCart", cart);
+
+            cartItemsContainer.removeItem(productToRemove); //-actual ID of the product, removes it from the container
+
             table.refreshRowCache();
         }
 
