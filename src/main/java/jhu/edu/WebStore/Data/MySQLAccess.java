@@ -192,6 +192,26 @@ public class MySQLAccess {
         return null;
     }
 
+    private ArrayList<Product> SearchInventory (String productSearch){
+
+//        ResultSet resultSet = null;
+//        SiteUser siteUser = null;
+//
+//        try {
+//            //resultSet = statement.executeQuery("select * from siteUser where ID = '"+userID+"'");
+//
+//
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+////        finally {
+////            close();
+////        }
+        return null;
+
+    }
+
 
 
     private void close() {

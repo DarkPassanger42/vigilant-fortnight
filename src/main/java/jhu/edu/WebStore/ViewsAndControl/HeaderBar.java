@@ -41,7 +41,6 @@ public class HeaderBar extends VerticalLayout {
         menuBarLayout.addComponent(mainMenu);
 
         addComponent(menuBarLayout);
-
     }
 
     MenuBar.Command goToPc = new MenuBar.Command() {
