@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public class MySQLAccess {
 
+    //TODO currently db connection is not actually closed anywhere....
+
     private Connection connect = null;
     private Statement statement = null;
 
@@ -32,11 +34,11 @@ public class MySQLAccess {
 
 
 
-    //getUser(String ID)
+    //getUser(String ID)    ???
 
-    //addUser()
+    //addUser()     ???
 
-    //authenticateUser(String userName, String password)
+    //authenticateUser(String userName, String password)    ???
 
 
     public ArrayList<Product> getProducts() {
@@ -188,27 +190,28 @@ public class MySQLAccess {
     }
 
     private ShoppingCart getCart (String userID){
-        //TODO implement....
+        //TODO implement....?
         return null;
     }
 
-    private ArrayList<Product> SearchInventory (String productSearch){
+    public ArrayList<Product> SearchInventory (String productSearch){
 
-//        ResultSet resultSet = null;
-//        SiteUser siteUser = null;
-//
-//        try {
-//            //resultSet = statement.executeQuery("select * from siteUser where ID = '"+userID+"'");
-//
-//
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
+        ResultSet resultSet = null;
+        ArrayList<Product> products = new ArrayList<>();
+
+        try {
+            resultSet = statement.executeQuery("select * from products where Description LIKE '%"+productSearch+"%'");
+            while (resultSet.next()) {
+                productDataExtractor(resultSet, products);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        finally {
+//            close();
 //        }
-////        finally {
-////            close();
-////        }
-        return null;
+        return products;
 
     }
 

@@ -14,8 +14,6 @@ public class LogInAndOutComponent extends CustomComponent implements Button.Clic
     protected Label infoLabel;
     protected WebStoreUI parentUI;
 
-    protected TextField searchTextInput;
-    protected Label searchText;
 
     public LogInAndOutComponent(WebStoreUI ui){
         parentUI = ui;
@@ -24,14 +22,9 @@ public class LogInAndOutComponent extends CustomComponent implements Button.Clic
         logInAndOutButton = new Button("Log In",this);
         cart = new Button("CART", this);
         infoLabel = new Label();
-        searchTextInput = new TextField();
-        searchText = new Label("Search");
+
 
         components.addComponent(infoLabel);
-        components.addComponent(new Label(" "));    //space
-        components.addComponent(searchText);
-        components.addComponent(searchTextInput);
-        components.addComponent(new Label(" "));    //space
         components.addComponent(logInAndOutButton);
         components.addComponent(cart);
         components.setWidthUndefined();
@@ -94,7 +87,7 @@ public class LogInAndOutComponent extends CustomComponent implements Button.Clic
     }
 
     public void changeWelcomeText(String newText){
-        infoLabel.setCaption(newText);
+        infoLabel.setValue(newText);
     }
 
 }

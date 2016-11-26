@@ -1,7 +1,12 @@
 package jhu.edu.WebStore.ViewsAndControl;
 
 import com.vaadin.ui.*;
+import jhu.edu.WebStore.Data.Product;
+import jhu.edu.WebStore.Helpers.OnEnterKeyHandler;
 import jhu.edu.WebStore.WebStoreUI;
+
+
+import java.util.ArrayList;
 
 
 public class HeaderBar extends VerticalLayout {
@@ -19,8 +24,7 @@ public class HeaderBar extends VerticalLayout {
 
 
         //add main menu
-        VerticalLayout menuBarLayout = new VerticalLayout();
-        menuBarLayout.setWidth("100%");
+        HorizontalLayout menuBarLayout = new HorizontalLayout();
 
         MenuBar.MenuItem home = mainMenu.addItem("HOME",null ,goHome);
 
@@ -38,10 +42,69 @@ public class HeaderBar extends VerticalLayout {
 //        electronics.addItem("TV/Video",null,null);
 //        electronics.addItem("Audio", null, null);
 
+        mainMenu.setWidthUndefined();
+
+        //--------Search Menu------------
+        Label searchLabel = new Label("    Search");
+        searchLabel.setWidthUndefined();
+        TextField searchTextInput = new TextField();
+        searchTextInput.setWidthUndefined();
+        searchTextInput.setImmediate(true);
+
+        OnEnterKeyHandler onEnterHandler=new OnEnterKeyHandler(){
+            @Override
+            public void onEnterKeyPressed() {
+                SearchProducts(searchTextInput.getValue());
+            }
+        };
+        onEnterHandler.installOn(searchTextInput);
+        //-------------------------------
+
         menuBarLayout.addComponent(mainMenu);
+        menuBarLayout.setComponentAlignment(mainMenu,Alignment.MIDDLE_LEFT);
+
+        menuBarLayout.addComponent(searchLabel);
+        menuBarLayout.setComponentAlignment(searchLabel,Alignment.MIDDLE_LEFT);
+
+        menuBarLayout.addComponent(searchTextInput);
+        menuBarLayout.setComponentAlignment(searchTextInput,Alignment.MIDDLE_LEFT);
+
+
+        menuBarLayout.setWidthUndefined();
+        menuBarLayout.setSpacing(true);
+        menuBarLayout.setMargin(true);
 
         addComponent(menuBarLayout);
     }
+
+    //--------Search Menu------------
+    //ideally should probably move this out...
+    private void SearchProducts(String value) {
+
+        if (value.equals("")){
+            Notification.show("Enter search terms...",
+                    "",
+                    Notification.Type.HUMANIZED_MESSAGE);
+            return;
+        }
+
+        ArrayList<Product> products = parentUI.mySQLAccess.SearchInventory(value);
+        if (products.size() == 0){
+            Notification.show("Nothing Found...",
+                    "",
+                    Notification.Type.HUMANIZED_MESSAGE);
+        }
+        else{
+            SearchResultsWindow searchResultsWindow = new SearchResultsWindow(products,parentUI);
+            searchResultsWindow.setHeight("650px");
+            searchResultsWindow.setWidth("650px");
+            searchResultsWindow.center();
+            UI.getCurrent().addWindow(searchResultsWindow);
+            searchResultsWindow.focus();
+        }
+
+    }
+    //-------------------------------
 
     MenuBar.Command goToPc = new MenuBar.Command() {
         public void menuSelected(MenuBar.MenuItem selectedItem) {
