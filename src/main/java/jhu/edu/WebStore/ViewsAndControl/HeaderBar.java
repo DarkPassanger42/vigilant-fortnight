@@ -4,6 +4,7 @@ import com.vaadin.ui.*;
 import jhu.edu.WebStore.Data.Product;
 import jhu.edu.WebStore.Helpers.OnEnterKeyHandler;
 import jhu.edu.WebStore.WebStoreUI;
+import jhu.edu.WebStore.WindowsAndControl.SearchResultsWindow;
 
 
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public class HeaderBar extends VerticalLayout {
         else{
             SearchResultsWindow searchResultsWindow = new SearchResultsWindow(products,parentUI);
             searchResultsWindow.setHeight("650px");
-            searchResultsWindow.setWidth("650px");
+            searchResultsWindow.setWidth("500px");
             searchResultsWindow.center();
             UI.getCurrent().addWindow(searchResultsWindow);
             searchResultsWindow.focus();

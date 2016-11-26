@@ -34,7 +34,7 @@ public class HomeViewPanelCollection extends CustomComponent implements MouseEve
             Product product = productList.get(randomProd);
 
 
-            Panel panel = new Panel(product.getName());
+            Panel panel = new Panel(trimTitle(product.getName()));
             panel.addClickListener(this);
             panel.setId(product.getID());
 
@@ -81,6 +81,19 @@ public class HomeViewPanelCollection extends CustomComponent implements MouseEve
 
         ProductDetailsWindow detailsWindow = new ProductDetailsWindow(selectedProduct);
         UI.getCurrent().addWindow(detailsWindow);
+    }
 
+    private String trimTitle(String title){
+
+        String tmpStr = "";
+
+        if (title.length() < 30){
+            tmpStr = title;
+        }
+        else{
+            tmpStr = title.substring(0,30) + "...";
+        }
+
+        return tmpStr;
     }
 }

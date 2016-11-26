@@ -18,7 +18,6 @@ public abstract class BasePanelCollection extends CustomComponent implements Mou
 
     public BasePanelCollection(WebStoreUI ui){
         parentUI = ui;
-
     }
 
     public void buildPanelCollection(){
@@ -33,7 +32,7 @@ public abstract class BasePanelCollection extends CustomComponent implements Mou
 
 
         for (Product specificProduct : specificProducts){
-            Panel panel = new Panel(specificProduct.getName());
+            Panel panel = new Panel(trimTitle(specificProduct.getName()));
             panel.setWidth("250px");
             panel.setHeight("250px");
             panel.setId(specificProduct.getID());
@@ -77,5 +76,19 @@ public abstract class BasePanelCollection extends CustomComponent implements Mou
 
         ProductDetailsWindow detailsWindow = new ProductDetailsWindow(selectedProduct);
         UI.getCurrent().addWindow(detailsWindow);
+    }
+
+    private String trimTitle(String title){
+
+        String tmpStr = "";
+
+        if (title.length() < 30){
+            tmpStr = title;
+        }
+        else{
+            tmpStr = title.substring(0,30) + "...";
+        }
+
+        return tmpStr;
     }
 }

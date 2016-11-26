@@ -200,7 +200,7 @@ public class MySQLAccess {
         ArrayList<Product> products = new ArrayList<>();
 
         try {
-            resultSet = statement.executeQuery("select * from products where Description LIKE '%"+productSearch+"%'");
+            resultSet = statement.executeQuery("select * from products where Description LIKE upper('% "+productSearch+" %')OR Name LIKE upper('%"+productSearch+"%')");
             while (resultSet.next()) {
                 productDataExtractor(resultSet, products);
             }
