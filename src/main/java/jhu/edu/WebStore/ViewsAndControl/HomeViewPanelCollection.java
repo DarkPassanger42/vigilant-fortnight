@@ -87,11 +87,11 @@ public class HomeViewPanelCollection extends CustomComponent implements MouseEve
 
         String tmpStr = "";
 
-        if (title.length() < 30){
+        if (title.length() < 25){
             tmpStr = title;
         }
         else{
-            tmpStr = title.substring(0,30) + "...";
+            tmpStr = title.substring(0,25) + "...";
         }
 
         return tmpStr;
