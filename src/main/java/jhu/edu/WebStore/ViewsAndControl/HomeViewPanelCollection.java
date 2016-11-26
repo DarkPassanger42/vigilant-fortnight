@@ -24,8 +24,8 @@ public class HomeViewPanelCollection extends CustomComponent implements MouseEve
 
         //generate a random list of 8 products...
         //should be "special deals"
-        int min = 0;
-        int max = 11;       //all components
+        int min = 1;
+        int max = 93;       //all components
         for (int i = 1; i < 9; i++){
 
             //get a random product
