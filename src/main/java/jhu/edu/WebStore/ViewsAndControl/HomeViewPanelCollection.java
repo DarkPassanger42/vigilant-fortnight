@@ -20,6 +20,7 @@ public class HomeViewPanelCollection extends CustomComponent implements MouseEve
 
         GridLayout homeViewProducts = new GridLayout(6,6);
         homeViewProducts.setMargin(true);
+        homeViewProducts.setSpacing(true);
         homeViewProducts.setSizeFull();
 
         //generate a random list of 8 products...
@@ -37,12 +38,14 @@ public class HomeViewPanelCollection extends CustomComponent implements MouseEve
             Panel panel = new Panel(trimTitle(product.getName()));
             panel.addClickListener(this);
             panel.setId(product.getID());
+            panel.setWidth("300px");
+            panel.setHeight("300px");
 
 
             final ExternalResource er = new ExternalResource(product.getImage());
             Image image = new Image(null, er);
-            image.setHeight("200px");
-            image.setWidth("200px");
+            image.setHeight("170px");
+            image.setWidth("170px");
 
 
             FormLayout form = new FormLayout();
@@ -87,11 +90,11 @@ public class HomeViewPanelCollection extends CustomComponent implements MouseEve
 
         String tmpStr = "";
 
-        if (title.length() < 25){
+        if (title.length() < 30){
             tmpStr = title;
         }
         else{
-            tmpStr = title.substring(0,25) + "...";
+            tmpStr = title.substring(0,30) + "...";
         }
 
         return tmpStr;

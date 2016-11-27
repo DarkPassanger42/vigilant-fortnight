@@ -1,5 +1,8 @@
 package jhu.edu.WebStore.ViewsAndControl;
 
+import com.vaadin.server.ClassResource;
+import com.vaadin.server.FileResource;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.*;
 import jhu.edu.WebStore.Data.Product;
 import jhu.edu.WebStore.Helpers.OnEnterKeyHandler;
@@ -7,6 +10,7 @@ import jhu.edu.WebStore.WebStoreUI;
 import jhu.edu.WebStore.WindowsAndControl.SearchResultsWindow;
 
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -23,9 +27,26 @@ public class HeaderBar extends VerticalLayout {
         super();
         this.parentUI = parentUI;
 
+        VerticalLayout overallHeader = new VerticalLayout();
+
+        HorizontalLayout imageLayout = new HorizontalLayout();
+        String basepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
+        FileResource resource = new FileResource(new File(basepath +
+                "/WEB-INF/classes/jas1.png"));
+
+        Image logo = new Image("",resource);
+        logo.setWidth("400px");
+        logo.setHeight("100px");
+
+        imageLayout.addComponent(logo);
+        imageLayout.setWidth("100%");
+        imageLayout.setHeightUndefined();
+
+        overallHeader.addComponent(imageLayout);
 
         //add main menu
         HorizontalLayout menuBarLayout = new HorizontalLayout();
+        overallHeader.addComponent(menuBarLayout);
 
         MenuBar.MenuItem home = mainMenu.addItem("HOME",null ,goHome);
 
@@ -75,7 +96,7 @@ public class HeaderBar extends VerticalLayout {
         menuBarLayout.setSpacing(true);
         menuBarLayout.setMargin(true);
 
-        addComponent(menuBarLayout);
+        addComponent(overallHeader);
     }
 
     //--------Search Menu------------

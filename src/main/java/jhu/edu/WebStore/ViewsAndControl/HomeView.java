@@ -14,17 +14,24 @@ public class HomeView extends BaseView {
         parentUI = ui;
 
         AbsoluteLayout introStuff = new AbsoluteLayout();
-        introStuff.setHeight("200");
+
+        //-----for spacing-------
+        introStuff.setHeight("40");
         introStuff.setWidth("100%");
-        Label homeViewText2 = new Label("add some intro stuff here");
-        introStuff.addComponent(homeViewText2, "left: 30%; right: 20% top: 20%; bottom: 20%;");
+        //-----------------------
+
+        //add some intro stuff here????
+
+        //like "specials" or something of that nature
+
+//        Label homeViewText2 = new Label("add some intro stuff here");
+//        introStuff.addComponent(homeViewText2, "left: 30%; right: 20% top: 20%; bottom: 20%;");
 
         addComponent(introStuff);
 
         HomeViewPanelCollection homeViewProducts = new HomeViewPanelCollection(parentUI.mySQLAccess.getProducts());
 
         addComponent(homeViewProducts);
-
     }
 
     @Override
