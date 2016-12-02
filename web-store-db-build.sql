@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `webstoredb`.`Products` (
   `Subcategory` VARCHAR(45) NULL,
   `Description` VARCHAR(200) NULL,
   `Price` VARCHAR(45) NULL,
-  `ImageLocation` VARCHAR(100) NULL,
+  `ImageLocation` VARCHAR(200) NULL,
   PRIMARY KEY (`ID`));
 
 
