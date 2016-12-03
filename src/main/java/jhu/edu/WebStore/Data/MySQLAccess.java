@@ -109,7 +109,75 @@ public class MySQLAccess {
 //        }
         return products;
     }
+    
+    public ArrayList<Product> getGamingConsoleProducts() {
+        ResultSet resultSet = null;
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            resultSet = statement.executeQuery("select * from products where Category = 'GAMING' && Subcategory = 'Console'");
+            while (resultSet.next()) {
+                productDataExtractor(resultSet, products);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        finally {
+//            close();
+//        }
+        return products;
+    }
+    
+    public ArrayList<Product> getGamingPCProducts() {
+        ResultSet resultSet = null;
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            resultSet = statement.executeQuery("select * from products where Category = 'GAMING' && Subcategory = 'PC'");
+            while (resultSet.next()) {
+                productDataExtractor(resultSet, products);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        finally {
+//            close();
+//        }
+        return products;
+    }
 
+    public ArrayList<Product> getETAudioProducts() {
+        ResultSet resultSet = null;
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            resultSet = statement.executeQuery("select * from products where Category = 'ELECTRONICS' && Subcategory = 'Audio'");
+            while (resultSet.next()) {
+                productDataExtractor(resultSet, products);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        finally {
+//            close();
+//        }
+        return products;
+    }
+    
+    public ArrayList<Product> getETTVVideoProducts() {
+        ResultSet resultSet = null;
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            resultSet = statement.executeQuery("select * from products where Category = 'ELECTRONICS' && Subcategory = 'TV/Video'");
+            while (resultSet.next()) {
+                productDataExtractor(resultSet, products);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+//        finally {
+//            close();
+//        }
+        return products;
+    }
+    
     public Product getProductById(String productId) {
         ResultSet resultSet = null;
         Product product = null;

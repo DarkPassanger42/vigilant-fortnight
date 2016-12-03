@@ -51,18 +51,10 @@ public class HeaderBar extends VerticalLayout {
         MenuBar.MenuItem home = mainMenu.addItem("HOME",null ,goHome);
 
         MenuBar.MenuItem computers = mainMenu.addItem("Computers",null, goToPc);
-//        computers.addItem("PC", null, goToPc);
-//        computers.addItem("Laptop", null, null);
-//        computers.addItem("Tablet", null, null);
+        
+        MenuBar.MenuItem gaming = mainMenu.addItem("Gaming",null, goToGames);
 
-        MenuBar.MenuItem components = mainMenu.addItem("Components",null, null);
-//        components.addItem("Storage",null,null);
-//        components.addItem("Memory", null, null);
-//        components.addItem("Processors", null, null);
-
-        MenuBar.MenuItem electronics = mainMenu.addItem("Electronics",null, null);
-//        electronics.addItem("TV/Video",null,null);
-//        electronics.addItem("Audio", null, null);
+        MenuBar.MenuItem electronics = mainMenu.addItem("Electronics",null, goToElectronics);
 
         mainMenu.setWidthUndefined();
 
@@ -127,7 +119,19 @@ public class HeaderBar extends VerticalLayout {
 
     }
     //-------------------------------
-
+    
+    MenuBar.Command goToElectronics = new MenuBar.Command() {
+        public void menuSelected(MenuBar.MenuItem selectedItem) {
+            parentUI.nav.navigateTo(parentUI.VIEW_ELECTRONICS);
+        }
+    };
+    
+    MenuBar.Command goToGames = new MenuBar.Command() {
+        public void menuSelected(MenuBar.MenuItem selectedItem) {
+            parentUI.nav.navigateTo(parentUI.VIEW_GAMING);
+        }
+    };
+    
     MenuBar.Command goToPc = new MenuBar.Command() {
         public void menuSelected(MenuBar.MenuItem selectedItem) {
             parentUI.nav.navigateTo(parentUI.VIEW_COMPUTERS);

@@ -15,6 +15,8 @@ import jhu.edu.WebStore.Data.LogInCredentials;
 import jhu.edu.WebStore.Data.MySQLAccess;
 import jhu.edu.WebStore.Data.ShoppingCart;
 import jhu.edu.WebStore.ViewsAndControl.ComputersView;
+import jhu.edu.WebStore.ViewsAndControl.GamingView;
+import jhu.edu.WebStore.ViewsAndControl.ElectronicsView;
 import jhu.edu.WebStore.ViewsAndControl.ConfirmationView;
 import jhu.edu.WebStore.ViewsAndControl.HomeView;
 
@@ -34,6 +36,8 @@ public class WebStoreUI extends UI {
     public Navigator nav;
     protected View myHomeView;
     protected View computersView;
+    protected View gamingView;
+    protected View electronicsView;
     protected View confirmationView;
 
     //normally these probably should probably be private with get/set
@@ -42,6 +46,8 @@ public class WebStoreUI extends UI {
 
     final public static String VIEW_STORE_HOME = "";
     final public static String VIEW_COMPUTERS = "computers";
+    final public static String VIEW_GAMING = "gaming";
+    final public static String VIEW_ELECTRONICS = "electronics";
     final public static String VIEW_CONFIRMATION = "confirmation";
 
     @Override
@@ -68,6 +74,12 @@ public class WebStoreUI extends UI {
 
         computersView = new ComputersView(this);
         nav.addView(VIEW_COMPUTERS,computersView);
+        
+        gamingView = new GamingView(this);
+        nav.addView(VIEW_GAMING, gamingView);
+        
+        electronicsView = new ElectronicsView(this);
+        nav.addView(VIEW_ELECTRONICS, electronicsView);
 
         confirmationView = new ConfirmationView(this);
         nav.addView(VIEW_CONFIRMATION,confirmationView);
