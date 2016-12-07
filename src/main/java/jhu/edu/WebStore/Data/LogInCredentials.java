@@ -3,18 +3,18 @@ package jhu.edu.WebStore.Data;
 
 public class LogInCredentials {
 
-    private String id;
+    private String username;
     private String password;
     private boolean areValid;
 
-    public LogInCredentials(String ID, String Password){
-        this.id = ID;
+    public LogInCredentials(String Username, String Password){
+        this.username = Username;
         this.password = Password;
         areValid = false;
     }
 
     public String getName(){
-        return id;
+        return username;
     }
 
     public String getPassword(){
@@ -22,7 +22,7 @@ public class LogInCredentials {
     }
 
     public String getId(){
-        return id;
+        return username;
     }
 
     public boolean areValid(){
@@ -33,10 +33,9 @@ public class LogInCredentials {
         this.areValid = areValid;
     }
 
-
     @Override
     public String toString() {
-        return id +" "+ password;
+        return username +" "+ password;
     }
 
 

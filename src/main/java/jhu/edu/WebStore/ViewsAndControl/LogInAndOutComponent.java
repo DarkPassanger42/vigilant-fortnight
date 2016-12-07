@@ -1,5 +1,6 @@
 package jhu.edu.WebStore.ViewsAndControl;
 
+import com.vaadin.server.UIProvider;
 import com.vaadin.ui.*;
 import jhu.edu.WebStore.Data.LogInCredentials;
 import jhu.edu.WebStore.WindowsAndControl.LogInWindow;
@@ -9,6 +10,7 @@ import jhu.edu.WebStore.WindowsAndControl.CartWindow;
 public class LogInAndOutComponent extends CustomComponent implements Button.ClickListener{
 
     protected Button logInAndOutButton;
+    protected Button registerUser;
     protected Button cart;
 
     protected Label infoLabel;
@@ -52,7 +54,7 @@ public class LogInAndOutComponent extends CustomComponent implements Button.Clic
             getUI().getNavigator().getCurrentView().enter(null);
         }
         else if (clickEvent.getComponent().getCaption().equals("LOG IN")){
-            LogInWindow logInWindow = new LogInWindow();
+            LogInWindow logInWindow = new LogInWindow(parentUI);
             logInWindow.setHeight("50%");
             logInWindow.setWidth("50%");
             logInWindow.center();

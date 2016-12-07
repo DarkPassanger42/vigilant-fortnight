@@ -32,13 +32,19 @@ CREATE TABLE IF NOT EXISTS `webstoredb`.`Products` (
 
 
 -- -----------------------------------------------------
--- Table `WebStoreDB`.`Users`
+-- Table `WebStoreDB`.`siteUser`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `webstoredb`.`Users` (
-  `ID` INT NOT NULL,
-  `Name` VARCHAR(45) NULL,
-  `Category` VARCHAR(45) NULL,
-    PRIMARY KEY (`ID`));
+CREATE TABLE IF NOT EXISTS `webstoredb`.`siteuser` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(512) DEFAULT NULL,
+  `lastname` varchar(255) NOT NULL,
+  `firstname` varchar(255) NOT NULL,
+  `purchasedItems` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ID_UNIQUE` (`id`),
+  UNIQUE KEY `username_UNIQUE` (`username`)
+  );
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
@@ -48,6 +54,10 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 -- Add data
 -- -----------------------------------------------------
+-- USER
+INSERT INTO 'webstoredb'.'siteuser' (`id`, `username`, `password`, `lastname`, `firstname`, `purchasedItems`)
+VALUES (1,'joe@test.com','123','Test','Joe',NULL)
+
 -- PC
 INSERT INTO `webstoredb`.`products` (`ID`, `Name`, `Category`, `Subcategory`, `Description`, `Price`, `ImageLocation`)
 VALUES ('1', 'DELL Desktop Computer OptiPlex 5040', 'COMP', 'Desktop',

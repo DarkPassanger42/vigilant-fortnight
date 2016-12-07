@@ -1,7 +1,10 @@
 package jhu.edu.WebStore.WindowsAndControl;
 
 
+import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import jhu.edu.WebStore.Data.LogInCredentials;
 import jhu.edu.WebStore.Data.Product;
@@ -12,20 +15,21 @@ public class ProductDetailsWindow extends Window {
 
 
     public ProductDetailsWindow(Product product){
-        super(product.getDescription());
+        super(product.getName());
         center();
 
         // Some basic content for the window
         HorizontalLayout buttonLayout = new HorizontalLayout();
 
         VerticalLayout content = new VerticalLayout();
-        content.addComponent(new Label(product.getDescription()));
-        content.addComponent(new Label(product.getName()));
+        content.addComponent(new Label("$" + product.getPrice()));
+        content.addComponent(new Label(
+                formatDescription(product.getDescription()), ContentMode.HTML));
 
         final ExternalResource er = new ExternalResource(product.getImage());
         Image image = new Image(null, er);
-        image.setHeight("500px");
-        image.setWidth("500px");
+        image.setHeight("400px");
+        image.setWidth("400px");
 
         content.addComponent(image);
 
@@ -75,5 +79,13 @@ public class ProductDetailsWindow extends Window {
         setContent(content);
     }
 
-
+    protected String formatDescription(String description) {
+        String[] descParts = description.split(",");
+        String fullDescription = "<ul>";
+        for(String part : descParts) { 
+            fullDescription += "<li>"+ part + "</li>";
+        }
+        
+        return fullDescription + "</ul>";
+    }
 }

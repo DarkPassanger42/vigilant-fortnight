@@ -3,24 +3,27 @@ package jhu.edu.WebStore.WindowsAndControl;
 
 import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import java.util.Collection;
 import jhu.edu.WebStore.Data.LogInCredentials;
+import jhu.edu.WebStore.Data.SiteUser;
 import jhu.edu.WebStore.WebStoreUI;
 
 
-public class LogInWindow extends Window {
+public class RegistrationWindow extends Window {
 
     WebStoreUI parentUI;
     private final TextField user;
+    private final TextField fname;
+    private final TextField lname;
     private final PasswordField password;
-    private final Button loginButton;
-    private final Button registerButton;
+    private final Button submit;
 
-    public LogInWindow(WebStoreUI ui){
-        super("LOG IN");
+    public RegistrationWindow(WebStoreUI ui){
+        super("REGISTRATION");
         parentUI = ui;
 
         //Create the user input field
@@ -31,6 +34,22 @@ public class LogInWindow extends Window {
         user.addValidator(new EmailValidator(
                 "Username must be an email address"));
         user.setInvalidAllowed(false);
+        
+        //Create the fname input field
+        fname = new TextField("First Name:");
+        fname.setWidth("300px");
+        fname.setRequired(true);
+        fname.addValidator(new StringLengthValidator(
+                "First name must be atleast 3 characters", 3, Integer.MAX_VALUE, false));
+        fname.setInvalidAllowed(false);
+        
+        //Create the lname input field
+        lname = new TextField("Last Name:");
+        lname.setWidth("300px");
+        lname.setRequired(true);
+        lname.addValidator(new StringLengthValidator(
+                "Last name must be atleast 3 characters", 3, Integer.MAX_VALUE, false));
+        lname.setInvalidAllowed(false);
 
         // Create the password input field
         password = new PasswordField("Password:");
@@ -40,33 +59,16 @@ public class LogInWindow extends Window {
         password.setValue("");
         password.setNullRepresentation("");
 
-        loginButton = new Button("LOG IN",
+        submit = new Button("SUBMIT",
                 new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        AuthenticateUser();
+                        RegisterUser();
                     }
                 });
-        
-        registerButton = new Button("REGISTER",
-                new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(Button.ClickEvent event) {
-                        RegistrationWindow registerWindow = new RegistrationWindow(parentUI);
-                        registerWindow.setHeight("75%");
-                        registerWindow.setWidth("50%");
-                        registerWindow.center();
-                        getUI().addWindow(registerWindow);
-                        close();
-                    }
-                });
-
-        HorizontalLayout buttons = new HorizontalLayout(loginButton, registerButton);
-        buttons.setSpacing(true);
         
         // Add both to a panel
-        VerticalLayout fields = new VerticalLayout(user, password, buttons);
-        fields.setCaption("Please login to access the application. (joe@test.com/123)");
+        VerticalLayout fields = new VerticalLayout(user, fname, lname, password, submit);
         fields.setSpacing(true);
         fields.setMargin(new MarginInfo(true, true, true, false));
         fields.setSizeUndefined();
@@ -79,42 +81,48 @@ public class LogInWindow extends Window {
         setContent(viewLayout);
     }
     
-    private void AuthenticateUser() {
+    private void RegisterUser() {
 
         // Validate the fields using the navigator. By using validors for the
         // fields we reduce the amount of queries we have to use to the database
         // for wrongly entered passwords
         //
-        if (!user.isValid() || !password.isValid()) {
+        if (!user.isValid() || !fname.isValid() || 
+                !lname.isValid() || !password.isValid()) {
             return;
         }
 
         String username = user.getValue();
+        String firstname = fname.getValue();
+        String lastname = lname.getValue();
         String password = this.password.getValue();
 
         /*
-         * Validate username and password with database here. For examples sake
-         * I use a dummy username and password.
+         * Make sure username is not already used
          */
-
-        LogInCredentials logInCredentials = new LogInCredentials(username, password);
-        parentUI.mySQLAccess.validateUser(logInCredentials);
-
-        if (logInCredentials.areValid()) {
-
-            // Store the current user in the service session
-            getSession().setAttribute("LogInInfo", logInCredentials);
-            getUI().getNavigator().getCurrentView().enter(null);
-            this.close();
-
-        } else {
-
-            // Wrong password clear the password field and refocuses it
-            this.password.setValue(null);
-            this.password.focus();
-
+        if(parentUI.mySQLAccess.usernameAlreadyUsed(username) == true) {
+            user.clear();
+            Notification.show("Username is already taken.",
+                        "",
+                        Notification.Type.ERROR_MESSAGE);
+            return;
         }
 
+        /*
+         * Insert user Information into DB
+         */
+        parentUI.mySQLAccess.addUserInfo(username, firstname, lastname, password);
+        
+        /*
+         * Log user in and update view
+         */
+        LogInCredentials logInCredentials = new LogInCredentials(username, password);
+        logInCredentials.areValid(true);
+        
+        // Store the current user in the service session
+        getSession().setAttribute("LogInInfo", logInCredentials);
+        getUI().getNavigator().getCurrentView().enter(null);
+        this.close();
     }
 
     public static final class PasswordValidator extends

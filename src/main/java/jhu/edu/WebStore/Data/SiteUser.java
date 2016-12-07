@@ -8,19 +8,19 @@ import java.util.ArrayList;
 
 public class SiteUser {
 
-    private String ID;
-    private String Name;
-    private String Address;
-    private String CreditCard;
+    private int ID;
+    private String username;
+    private String fname;
+    private String lname;
     private ShoppingCart PurchasedItems;
     private jhu.edu.WebStore.Data.LogInCredentials LogInCredentials;
 
-    public SiteUser(String id, String name, String address, String creditCardInfo, ShoppingCart purchasedItems,
+    public SiteUser(int id, String name, String fname, String lname, ShoppingCart purchasedItems,
                     LogInCredentials logInCredentials){
         this.ID = id;
-        this.Name = name;
-        this.Address = address;
-        this.CreditCard = creditCardInfo;
+        this.username = name;
+        this.fname = fname;
+        this.lname = lname;
 
         this.PurchasedItems = purchasedItems;
         this.LogInCredentials = logInCredentials;
@@ -30,36 +30,36 @@ public class SiteUser {
         return LogInCredentials;
     }
 
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setID(int ID) {
         this.ID = ID;
     }
 
-    public String getName() {
-        return Name;
+    public String getUserName() {
+        return username;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setUserName(String name) {
+        this.username = name;
     }
-
-    public String getAddress() {
-        return Address;
+    
+    public String getFirstName() {
+        return fname;
     }
-
-    public void setAddress(String address) {
-        Address = address;
+    
+    public void setFirstName(String fname) {
+        this.fname = fname;
     }
-
-    public String getCreditCard() {
-        return CreditCard;
+    
+    public String getLastName() {
+        return lname;
     }
-
-    public void setCreditCard(String creditCard) {
-        CreditCard = creditCard;
+    
+    public void setLastName(String lname) {
+        this.lname = lname;
     }
 
     public ShoppingCart getPurchasedItems() {

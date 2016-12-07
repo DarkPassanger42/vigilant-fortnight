@@ -2,6 +2,7 @@ package jhu.edu.WebStore.Data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -31,24 +32,16 @@ public class MySQLAccess {
             throw e;
         }
     }
-
-
-
-    //getUser(String ID)    ???
-
-    //addUser()     ???
-
-    //authenticateUser(String userName, String password)    ???
-
+    
 
     public ArrayList<Product> getProducts() {
         ResultSet resultSet = null;
         ArrayList<Product> products = new ArrayList<>();
         try {
             resultSet = statement.executeQuery("select * from products");
-        while (resultSet.next()) {
-            productDataExtractor(resultSet, products);
-        }
+            while (resultSet.next()) {
+                productDataExtractor(resultSet, products);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -216,6 +209,67 @@ public class MySQLAccess {
         products.add(product);
     }
 
+    public boolean usernameAlreadyUsed(String username) {
+        ResultSet resultSet = null;
+        String uname = "";
+        try {
+            resultSet = statement.executeQuery("SELECT * FROM siteuser where username='"+username+"'");
+            resultSet.next();
+            uname = resultSet.getString("username");
+            if(!uname.isEmpty()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            String message = e.getLocalizedMessage();
+            System.out.println(message);
+            return true;
+        }
+        // Username not already in use
+        return false;
+    }
+    
+    public void validateUser(LogInCredentials login) {
+        ResultSet resultSet = null;
+        String uname = "";
+        String pword = "";
+
+        try {
+            resultSet = statement.executeQuery(
+                    "SELECT username, password FROM siteuser where username='"
+                    + login.getName() + "';");
+            
+            resultSet.next();
+            uname = resultSet.getString("username");
+            pword = resultSet.getString("password");
+            
+            if(uname.equals(login.getName()) && pword.equals(login.getPassword())) {
+                login.areValid(true);
+            } else {
+                login.areValid(false);
+            }
+        } catch (SQLException e) {
+            return;
+        }
+    }
+    
+    public void addUserInfo(String uname, String fname, String lname, String pword) {
+        String insert = "insert into siteUser (username, password, firstname, lastname)"
+                + " values (?, ?, ?, ?)";
+        
+        // Create the mysql inser prepared statement
+        try {
+            PreparedStatement preparedStmt = connect.prepareStatement(insert);
+            preparedStmt.setString(1, uname);
+            preparedStmt.setString(2, pword);
+            preparedStmt.setString(3, fname);
+            preparedStmt.setString(4, lname);
+            preparedStmt.execute();
+            connect.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     private SiteUser getUserInfo(String userID){
 
         ResultSet resultSet = null;
@@ -224,12 +278,13 @@ public class MySQLAccess {
         try {
             resultSet = statement.executeQuery("select * from siteUser where ID = '"+userID+"'");
 
-            String id = resultSet.getString("ID");
+            int id = resultSet.getInt("ID");
             String password = resultSet.getString("Password");
-
-            String name = resultSet.getString("name");
-            String address = resultSet.getString("address");
-            String creditCardInfo = resultSet.getString("creditCardInfo");
+            String username = resultSet.getString("username");
+            String fname = resultSet.getString("firstname");
+            String lname = resultSet.getString("lastname");
+            //String address = resultSet.getString("address");
+            //String creditCardInfo = resultSet.getString("creditCardInfo");
 
             String purchasedItems = resultSet.getString("purchasedItems");
 
@@ -242,11 +297,11 @@ public class MySQLAccess {
 
             //user should have login and password
             //this probably needs some work
-            LogInCredentials logIn = new LogInCredentials(id, password);
+            LogInCredentials logIn = new LogInCredentials(username, password);
             logIn.areValid(true);
 
 
-            siteUser = new SiteUser(id, name, address, creditCardInfo, cart, logIn);
+            siteUser = new SiteUser(id, username, fname, lname, cart, logIn);
 
         } catch (SQLException e) {
             e.printStackTrace();
