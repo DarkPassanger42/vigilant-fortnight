@@ -55,8 +55,8 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- Add data
 -- -----------------------------------------------------
 -- USER
-INSERT INTO 'webstoredb'.'siteuser' (`id`, `username`, `password`, `lastname`, `firstname`, `purchasedItems`)
-VALUES (1,'joe@test.com','123','Test','Joe',NULL)
+INSERT INTO `ebstoredb`.`siteuser` (`id`, `username`, `password`, `lastname`, `firstname`, `purchasedItems`)
+VALUES (1,'joe@test.com','123','Test','Joe',NULL);
 
 -- PC
 INSERT INTO `webstoredb`.`products` (`ID`, `Name`, `Category`, `Subcategory`, `Description`, `Price`, `ImageLocation`)
