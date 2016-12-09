@@ -7,6 +7,7 @@ import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.*;
 import jhu.edu.WebStore.Data.Product;
 import jhu.edu.WebStore.Data.ShoppingCart;
+import jhu.edu.WebStore.Data.SiteUser;
 import jhu.edu.WebStore.WebStoreUI;
 
 
@@ -17,6 +18,7 @@ public class CartWindow extends Window {
 
     WebStoreUI parentUI;
     String productToRemove;
+    SiteUser currentUser;
     ShoppingCart cart;
     Table table;
 
@@ -69,7 +71,8 @@ public class CartWindow extends Window {
             public void buttonClick(Button.ClickEvent clickEvent) {
 
                 //update session variable for cart, just in case...
-                parentUI.getSession().setAttribute("ShoppingCart", cart);
+                currentUser.setShoppingCart(cart);
+                parentUI.getSession().setAttribute("SiteUser", currentUser);
 
                 //and exit...
                 close();
@@ -98,7 +101,8 @@ public class CartWindow extends Window {
 
 
         //get all products in the cart
-        cart = (ShoppingCart) parentUI.getSession().getAttribute("ShoppingCart");
+        currentUser = (SiteUser)parentUI.getSession().getAttribute("SiteUser");
+        cart = currentUser.getShoppingCart();
 
         //get cart items as an indexed container and bind to UI
         cartItemsContainer = cart.getCartContainer();
@@ -128,7 +132,8 @@ public class CartWindow extends Window {
             cart.removeProduct(productToRemove);    //-actual ID of the product, removes it from the list, not container
 
             //update session variable for cart
-            parentUI.getSession().setAttribute("ShoppingCart", cart);
+            currentUser.setShoppingCart(cart);
+            parentUI.getSession().setAttribute("SiteUser", currentUser);
 
             cartItemsContainer.removeItem(productToRemove); //-actual ID of the product, removes it from the container
 

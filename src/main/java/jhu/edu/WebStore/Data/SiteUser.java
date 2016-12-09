@@ -12,17 +12,27 @@ public class SiteUser {
     private String username;
     private String fname;
     private String lname;
-    private ShoppingCart PurchasedItems;
+    private ShoppingCart shoppingCart;
     private jhu.edu.WebStore.Data.LogInCredentials LogInCredentials;
 
-    public SiteUser(int id, String name, String fname, String lname, ShoppingCart purchasedItems,
+    public SiteUser() {
+        this.ID = -1;
+        this.username = "";
+        this.fname = "";
+        this.lname = "";
+
+        this.shoppingCart = new ShoppingCart();
+        this.LogInCredentials = new LogInCredentials("", "");
+    }
+    
+    public SiteUser(int id, String name, String fname, String lname, ShoppingCart shoppingCart,
                     LogInCredentials logInCredentials){
         this.ID = id;
         this.username = name;
         this.fname = fname;
         this.lname = lname;
 
-        this.PurchasedItems = purchasedItems;
+        this.shoppingCart = shoppingCart;
         this.LogInCredentials = logInCredentials;
     }
 
@@ -62,12 +72,12 @@ public class SiteUser {
         this.lname = lname;
     }
 
-    public ShoppingCart getPurchasedItems() {
-        return PurchasedItems;
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
     }
 
-    public void setPurchasedItems(ShoppingCart purchasedItems) {
-        PurchasedItems = purchasedItems;
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
     }
 
 

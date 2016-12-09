@@ -9,6 +9,7 @@ import com.vaadin.ui.*;
 import jhu.edu.WebStore.Data.LogInCredentials;
 import jhu.edu.WebStore.Data.Product;
 import jhu.edu.WebStore.Data.ShoppingCart;
+import jhu.edu.WebStore.Data.SiteUser;
 
 
 public class ProductDetailsWindow extends Window {
@@ -28,8 +29,8 @@ public class ProductDetailsWindow extends Window {
 
         final ExternalResource er = new ExternalResource(product.getImage());
         Image image = new Image(null, er);
-        image.setHeight("400px");
-        image.setWidth("400px");
+        image.setHeight("350px");
+        image.setWidth("350px");
 
         content.addComponent(image);
 
@@ -55,9 +56,13 @@ public class ProductDetailsWindow extends Window {
                 LogInCredentials lc = (LogInCredentials)loginInfo;
                 if(lc.areValid()){
                     //get current list of products in the cart
-                    ShoppingCart currentShoppingCart = (ShoppingCart)getSession().getAttribute("ShoppingCart");
+                    SiteUser currentUser = (SiteUser)getSession().getAttribute("SiteUser");
+                    ShoppingCart currentShoppingCart = currentUser.getShoppingCart();
                     currentShoppingCart.addProduct(product);
-                    getSession().setAttribute("ShoppingCart", currentShoppingCart);
+                    
+                    // Save shopping cart for current user
+                    currentUser.setShoppingCart(currentShoppingCart);
+                    getSession().setAttribute("SiteUser", currentUser);
                     close(); // Close the sub-window
                     Notification.show("Item has been added to cart",
                             "",

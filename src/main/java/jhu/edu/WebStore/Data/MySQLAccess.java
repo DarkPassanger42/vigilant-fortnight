@@ -176,17 +176,17 @@ public class MySQLAccess {
         Product product = null;
         try {
             resultSet = statement.executeQuery("select * from products where ID = '"+productId+"'");
-
-            String id = resultSet.getString("ID");
-            String category = resultSet.getString("Category");
-            String subcategory = resultSet.getString("Subcategory");
-            String name = resultSet.getString("Name");
-            String description = resultSet.getString("Description");
-            String price = resultSet.getString("Price");
-            String imageLocation = resultSet.getString("ImageLocation");
-            //could probably add quantity...
-            product = new Product(id, category, subcategory, name, description, price, imageLocation);
-
+            if(resultSet.next()) {
+                String id = resultSet.getString("ID");
+                String category = resultSet.getString("Category");
+                String subcategory = resultSet.getString("Subcategory");
+                String name = resultSet.getString("Name");
+                String description = resultSet.getString("Description");
+                String price = resultSet.getString("Price");
+                String imageLocation = resultSet.getString("ImageLocation");
+                //could probably add quantity...
+                product = new Product(id, category, subcategory, name, description, price, imageLocation);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -214,9 +214,7 @@ public class MySQLAccess {
         String uname = "";
         try {
             resultSet = statement.executeQuery("SELECT * FROM siteuser where username='"+username+"'");
-            resultSet.next();
-            uname = resultSet.getString("username");
-            if(!uname.isEmpty()) {
+            if(resultSet.next()) {
                 return true;
             }
         } catch (SQLException e) {
@@ -253,8 +251,8 @@ public class MySQLAccess {
     }
     
     public void addUserInfo(String uname, String fname, String lname, String pword) {
-        String insert = "insert into siteUser (username, password, firstname, lastname)"
-                + " values (?, ?, ?, ?)";
+        String insert = "insert into siteUser (username, password, firstname, lastname, purchasedItems)"
+                + " values (?, ?, ?, ?, ?)";
         
         // Create the mysql inser prepared statement
         try {
@@ -263,6 +261,7 @@ public class MySQLAccess {
             preparedStmt.setString(2, pword);
             preparedStmt.setString(3, fname);
             preparedStmt.setString(4, lname);
+            preparedStmt.setString(5, "");
             preparedStmt.execute();
             connect.commit();
         } catch (SQLException e) {
@@ -270,51 +269,69 @@ public class MySQLAccess {
         }
     }
     
-    private SiteUser getUserInfo(String userID){
+    public SiteUser getUserInfo(String uname){
 
         ResultSet resultSet = null;
         SiteUser siteUser = null;
 
         try {
-            resultSet = statement.executeQuery("select * from siteUser where ID = '"+userID+"'");
+            resultSet = statement.executeQuery("select * from siteUser where username = '"+uname+"'");
+            if(resultSet.next()) {
+                int id = resultSet.getInt("ID");
+                String password = resultSet.getString("password");
+                String username = resultSet.getString("username");
+                String fname = resultSet.getString("firstname");
+                String lname = resultSet.getString("lastname");
+                //String address = resultSet.getString("address");
+                //String creditCardInfo = resultSet.getString("creditCardInfo");
 
-            int id = resultSet.getInt("ID");
-            String password = resultSet.getString("Password");
-            String username = resultSet.getString("username");
-            String fname = resultSet.getString("firstname");
-            String lname = resultSet.getString("lastname");
-            //String address = resultSet.getString("address");
-            //String creditCardInfo = resultSet.getString("creditCardInfo");
+                String purchasedItems = resultSet.getString("purchasedItems");
+                    
+                ShoppingCart cart = new ShoppingCart();
+                if(purchasedItems != null) {
+                    if(!purchasedItems.isEmpty()) {
+                        for (String productID : purchasedItems.split(",")) {
+                            Product product = getProductById(productID.trim());
+                            if(product != null) { cart.addProduct(product); }
+                        }
+                    }
+                }
 
-            String purchasedItems = resultSet.getString("purchasedItems");
+                //user should have login and password
+                //this probably needs some work
+                LogInCredentials logIn = new LogInCredentials(username, password);
+                logIn.areValid(true);
 
-            //alternatively (a better way) is to do a table here
-            //rather than a csv product list
-            ShoppingCart cart = new ShoppingCart();
-            for (String productID : purchasedItems.split(",")) {
-                cart.addProduct(getProductById(productID.trim()));
+
+                siteUser = new SiteUser(id, username, fname, lname, cart, logIn);
+            } else {
+                siteUser = new SiteUser();
             }
-
-            //user should have login and password
-            //this probably needs some work
-            LogInCredentials logIn = new LogInCredentials(username, password);
-            logIn.areValid(true);
-
-
-            siteUser = new SiteUser(id, username, fname, lname, cart, logIn);
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        finally {
-//            close();
-//        }
+        
         return siteUser;
     }
 
-    private ShoppingCart getCart (String userID){
-        //TODO implement....?
-        return null;
+    public void saveCart (SiteUser user){
+        ShoppingCart cart = user.getShoppingCart();
+        String savedCart = "";
+        String updateCart = "update siteUser set purchasedItems = ? where username = ?";
+        
+        for(Product item: cart.getItems()) {
+            savedCart += item.getID() + ",";
+        }
+        
+        try {
+            PreparedStatement preparedStmt = connect.prepareStatement(updateCart);
+            preparedStmt.setString(1, savedCart);
+            preparedStmt.setString(2, user.getUserName());
+            preparedStmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<Product> SearchInventory (String productSearch){

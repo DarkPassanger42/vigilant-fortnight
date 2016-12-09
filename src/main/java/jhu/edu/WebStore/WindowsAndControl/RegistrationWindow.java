@@ -92,7 +92,7 @@ public class RegistrationWindow extends Window {
             return;
         }
 
-        String username = user.getValue();
+        String username = user.getValue().toLowerCase();
         String firstname = fname.getValue();
         String lastname = lname.getValue();
         String password = this.password.getValue();
@@ -112,6 +112,7 @@ public class RegistrationWindow extends Window {
          * Insert user Information into DB
          */
         parentUI.mySQLAccess.addUserInfo(username, firstname, lastname, password);
+        getSession().setAttribute("SiteUser", parentUI.mySQLAccess.getUserInfo(username));
         
         /*
          * Log user in and update view

@@ -75,7 +75,6 @@ public abstract class BasePanelCollection extends CustomComponent implements Mou
         }
 
         ProductDetailsWindow detailsWindow = new ProductDetailsWindow(selectedProduct);
-        detailsWindow.setHeight("50%");
         detailsWindow.setWidth("50%");
         UI.getCurrent().addWindow(detailsWindow);
     }

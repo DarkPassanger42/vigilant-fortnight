@@ -3,6 +3,7 @@ package jhu.edu.WebStore.ViewsAndControl;
 import com.vaadin.server.UIProvider;
 import com.vaadin.ui.*;
 import jhu.edu.WebStore.Data.LogInCredentials;
+import jhu.edu.WebStore.Data.SiteUser;
 import jhu.edu.WebStore.WindowsAndControl.LogInWindow;
 import jhu.edu.WebStore.WebStoreUI;
 import jhu.edu.WebStore.WindowsAndControl.CartWindow;
@@ -48,9 +49,13 @@ public class LogInAndOutComponent extends CustomComponent implements Button.Clic
     public void buttonClick(Button.ClickEvent clickEvent) {
 
         if (clickEvent.getComponent().getCaption().equals("LOG OUT")){
-
+            // Save shopping cart
+            SiteUser currentUser = (SiteUser)getSession().getAttribute("SiteUser");
+            parentUI.mySQLAccess.saveCart(currentUser);
+            
             //erase session data
             getSession().setAttribute("LogInInfo",new LogInCredentials("",""));
+            getSession().setAttribute("SiteUser", new SiteUser());
             getUI().getNavigator().getCurrentView().enter(null);
         }
         else if (clickEvent.getComponent().getCaption().equals("LOG IN")){
@@ -64,7 +69,6 @@ public class LogInAndOutComponent extends CustomComponent implements Button.Clic
             Object logInInfo = getSession().getAttribute("LogInInfo");
             LogInCredentials lc = (LogInCredentials)logInInfo;
             if (lc.areValid()){
-                //parentUI.nav.navigateTo(parentUI.VIEW_CART);
                 CartWindow cartWindow = new CartWindow(parentUI);
                 cartWindow.setHeight("650px");
                 cartWindow.setWidth("650px");

@@ -89,7 +89,7 @@ public class LogInWindow extends Window {
             return;
         }
 
-        String username = user.getValue();
+        String username = user.getValue().toLowerCase();
         String password = this.password.getValue();
 
         /*
@@ -104,6 +104,7 @@ public class LogInWindow extends Window {
 
             // Store the current user in the service session
             getSession().setAttribute("LogInInfo", logInCredentials);
+            getSession().setAttribute("SiteUser", parentUI.mySQLAccess.getUserInfo(username));
             getUI().getNavigator().getCurrentView().enter(null);
             this.close();
 

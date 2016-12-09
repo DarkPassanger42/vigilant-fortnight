@@ -14,6 +14,7 @@ import com.vaadin.ui.UI;
 import jhu.edu.WebStore.Data.LogInCredentials;
 import jhu.edu.WebStore.Data.MySQLAccess;
 import jhu.edu.WebStore.Data.ShoppingCart;
+import jhu.edu.WebStore.Data.SiteUser;
 import jhu.edu.WebStore.ViewsAndControl.ComputersView;
 import jhu.edu.WebStore.ViewsAndControl.GamingView;
 import jhu.edu.WebStore.ViewsAndControl.ElectronicsView;
@@ -65,7 +66,7 @@ public class WebStoreUI extends UI {
         //initially no password
         session = this.getSession();
         session.setAttribute("LogInInfo",new LogInCredentials("",""));
-        session.setAttribute("ShoppingCart", new ShoppingCart());
+        session.setAttribute("SiteUser", new SiteUser());
 
         nav = new Navigator(this, this);
 
