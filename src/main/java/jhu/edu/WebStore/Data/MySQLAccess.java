@@ -286,12 +286,13 @@ public class MySQLAccess {
                 //String creditCardInfo = resultSet.getString("creditCardInfo");
 
                 String purchasedItems = resultSet.getString("purchasedItems");
-                String purchasedItemsQty = resultSet.getString("purchasedItemsQuantities");
-                String[] purchasedItemsQtyArray = purchasedItemsQty.split(",");
+
                     
                 ShoppingCart cart = new ShoppingCart();
                 if(purchasedItems != null) {
                     if(!purchasedItems.isEmpty()) {
+                        String purchasedItemsQty = resultSet.getString("purchasedItemsQuantities");
+                        String[] purchasedItemsQtyArray = purchasedItemsQty.split(",");
                         int count = 0;
                         for (String productID : purchasedItems.split(",")) {
                             Product product = getProductById(productID.trim());
