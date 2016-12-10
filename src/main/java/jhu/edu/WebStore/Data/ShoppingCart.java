@@ -40,6 +40,22 @@ public class ShoppingCart {
         }
 
     }
+    
+    public void removeAllProducts() {
+        while(products.size() > 0) {
+            products.remove(0);
+        }
+    }
+    
+    public String getTotal() {
+        double result = 0.0;
+        
+        for(Product product : products) {
+            result += product.getActualPrice();
+        }
+        
+        return Double.toString(result);
+    }
 
     public ArrayList<Product> getItems(){
         return products;
@@ -50,13 +66,11 @@ public class ShoppingCart {
         IndexedContainer indexedContainer = new IndexedContainer();
         indexedContainer.addContainerProperty("Product",String.class,"");
         indexedContainer.addContainerProperty("Price",String.class,"");
-        indexedContainer.addContainerProperty("Quantity",String.class,"");
 
         for (Product product : products) {
             Item item = indexedContainer.addItem(product.getID());  //use product ID as an id in the container
             item.getItemProperty("Product").setValue(product.getName());
-            item.getItemProperty("Price").setValue(product.getPrice());
-            item.getItemProperty("Quantity").setValue("TBD");
+            item.getItemProperty("Price").setValue("$"+product.getPrice());
         }
 
         return indexedContainer;

@@ -8,6 +8,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import javax.swing.GroupLayout;
 import jhu.edu.WebStore.Data.Product;
@@ -15,6 +16,7 @@ import jhu.edu.WebStore.Data.ShoppingCart;
 import jhu.edu.WebStore.Data.SiteUser;
 import jhu.edu.WebStore.Helpers.CreditCard;
 import jhu.edu.WebStore.WebStoreUI;
+import jhu.edu.WebStore.WindowsAndControl.PurchaseSummary;
 import jhu.edu.WebStore.WindowsAndControl.RegistrationWindow;
 
 
@@ -22,6 +24,7 @@ public class ConfirmationView extends BaseView {
 
     WebStoreUI parentUI;
     
+    private Table table;
     private CreditCardForm creditCardForm;
     private CreditCard creditCard;
     private Button cancelButton;
@@ -31,18 +34,30 @@ public class ConfirmationView extends BaseView {
     public ConfirmationView(WebStoreUI ui){
         super(ui);
         parentUI = ui;
+        
+        initializeLayouts();
+        creditCardForm.getCard().focus();
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         super.enter(event);
-        if(checkOutLayout != null) {
-            removeComponent(checkOutLayout);
-        }
-        
         RefreshLogInOutComponent();
-        initializeLayouts();
-        creditCardForm.getCard().focus();
+        
+        //get all products in the cart from the session
+        SiteUser currentUser = (SiteUser)parentUI.getSession().getAttribute("SiteUser");
+        ShoppingCart cart = currentUser.getShoppingCart();
+        
+        //get cart items as an indexed container and bind to UI
+        IndexedContainer cartItemsContainer = cart.getCartContainer();
+        
+        table.setContainerDataSource(cartItemsContainer);
+        table.setPageLength(cartItemsContainer.size());
+        table.setColumnFooter("Price", "$" + cart.getTotal());
+        
+        // Auto Fill in first and last name;
+        creditCardForm.setfName(currentUser.getFirstName());
+        creditCardForm.setlName(currentUser.getLastName());
     }
 
     /**
@@ -54,48 +69,32 @@ public class ConfirmationView extends BaseView {
         checkOutLayout.setWidth("100%");
         checkOutLayout.setSpacing(true);
         checkOutLayout.setMargin(true);
-
-        //get all products in the cart from the session
-        SiteUser currentUser = (SiteUser)parentUI.getSession().getAttribute("SiteUser");
-        ShoppingCart cart = currentUser.getShoppingCart();
-
-        //get cart items as an indexed container and bind to UI
-        IndexedContainer cartItemsContainer = cart.getCartContainer();
         
-        HorizontalLayout tableLayout = new HorizontalLayout();
-        //tableLayout.setWidth("75%");
+        HorizontalLayout summaryLayout = new HorizontalLayout();
+        summaryLayout.setWidth("100%");
 
-        Table table = new Table("Products");
+        table = new Table("Products");
         table.setSelectable(false);
-        table.setContainerDataSource(cartItemsContainer);
-        //table.setWidth("100%");
-        table.setPageLength(cartItemsContainer.size());
+        table.setFooterVisible(true);
+        table.setColumnFooter("Product", "Total Price");
+        table.setColumnFooter("Price", "");
         
-        tableLayout.addComponent(table);
-        //tableLayout.setComponentAlignment(table, Alignment.TOP_CENTER);
-
-        checkOutLayout.addComponent(tableLayout);
-        checkOutLayout.setComponentAlignment(tableLayout, Alignment.TOP_CENTER);
+        summaryLayout.addComponent(table);
+        summaryLayout.setComponentAlignment(table, Alignment.TOP_LEFT);
         
         creditCardForm = new CreditCardForm();
         creditCardForm.setAvailableCreditCards();
+        creditCardForm.setAvailableCountries();
         
-        // Auto Fill in first and last name
-        // EXample:
-        // City City = reservation.getShow().getTheater().getCity();
-        /*
-        creditCardForm.setCityOrPostalOffice(city.getName());
-        creditCardForm.setAvailableCountries(backEnd.getCountryContainer());
-        creditCardForm.setSelectedCountry(city.getCountry());
-        */
-        
-        checkOutLayout.addComponent(creditCardForm);
-        checkOutLayout.setComponentAlignment(creditCardForm, Alignment.MIDDLE_CENTER);
+        summaryLayout.addComponent(creditCardForm);
+        summaryLayout.setComponentAlignment(creditCardForm, Alignment.TOP_RIGHT);
+        checkOutLayout.addComponent(summaryLayout);
         
         cancelButton = new Button("CANCEL",
                 new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
+                        parentUI.nav.navigateTo("");
                     }
                 });
         
@@ -103,6 +102,28 @@ public class ConfirmationView extends BaseView {
                 new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
+                        if(creditCardForm.checkFields() == true) {
+                            //Open Summary Window
+                            String address = creditCardForm.getStreetAsString() + ", " 
+                                    + creditCardForm.getCityAsString() + ", " 
+                                    + creditCardForm.getStateAsString() + " "
+                                    + creditCardForm.getZipAsString();
+                            
+                            PurchaseSummary summaryWindow = new PurchaseSummary(parentUI, address);
+                            summaryWindow.setHeight("75%");
+                            summaryWindow.setWidth("50%");
+                            summaryWindow.center();
+                            getUI().addWindow(summaryWindow);
+                            
+                            SiteUser currentUser = (SiteUser)parentUI.getSession().getAttribute("SiteUser");
+                            ShoppingCart cart = currentUser.getShoppingCart();
+                            cart.removeAllProducts();
+                            parentUI.mySQLAccess.saveCart(currentUser);
+                            parentUI.getSession().setAttribute("SiteUser", currentUser);
+        
+                            //navigate to home page
+                            parentUI.nav.navigateTo("");
+                        }
                     }
                 });
         

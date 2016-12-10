@@ -123,6 +123,8 @@ public class RegistrationWindow extends Window {
         // Store the current user in the service session
         getSession().setAttribute("LogInInfo", logInCredentials);
         getUI().getNavigator().getCurrentView().enter(null);
+        Notification.show("You are now registered!", "",
+                        Notification.Type.HUMANIZED_MESSAGE);
         this.close();
     }
 

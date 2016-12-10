@@ -5,6 +5,7 @@
  */
 package jhu.edu.WebStore.ViewsAndControl;
 
+import com.sun.org.apache.xalan.internal.utils.FeatureManager;
 import com.vaadin.data.Container;
 import com.vaadin.data.Validator;
 import com.vaadin.data.Validator.InvalidValueException;
@@ -13,9 +14,9 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import jhu.edu.WebStore.Helpers.Country;
 import jhu.edu.WebStore.Helpers.CreditCard;
 import jhu.edu.WebStore.Helpers.CreditCardType;
+import jhu.edu.WebStore.Helpers.State;
 
 /**
  *
@@ -29,8 +30,8 @@ public class CreditCardForm extends CustomLayout{
     
     private TextField nr1, nr2, nr3, nr4;
     private TextField year, month, csv;
-    private TextField street, zip, city;
-    private ComboBox country;
+    private TextField fName, lName, street, zip, city;
+    private ComboBox state;
     
     public CreditCardForm() {
         super("creditcardlayout");
@@ -60,28 +61,28 @@ public class CreditCardForm extends CustomLayout{
         nr1 = new TextField();
         nr1.setBuffered(true);
         nr1.setImmediate(false);
-        nr1.setWidth("52px");
+        nr1.setWidth("60px");
         nr1.setInputPrompt("xxxx");
         nr1.setMaxLength(4);
 
         nr2 = new TextField();
         nr2.setBuffered(true);
         nr2.setImmediate(false);
-        nr2.setWidth("52px");
+        nr2.setWidth("60px");
         nr2.setInputPrompt("xxxx");
         nr2.setMaxLength(4);
 
         nr3 = new TextField();
         nr3.setBuffered(true);;
         nr3.setImmediate(false);
-        nr3.setWidth("52px");
+        nr3.setWidth("60px");
         nr3.setInputPrompt("xxxx");
         nr3.setMaxLength(4);
 
         nr4 = new TextField();
         nr4.setBuffered(true);
         nr4.setImmediate(false);
-        nr4.setWidth("52px");
+        nr4.setWidth("60px");
         nr4.setInputPrompt("xxxx");
         nr4.setMaxLength(4);
 
@@ -90,32 +91,48 @@ public class CreditCardForm extends CustomLayout{
         addComponent(nr3, "ccnr3");
         addComponent(nr4, "ccnr4");
 
-        year = new TextField();
-        year.setBuffered(true);
-        year.setImmediate(false);
-        year.setWidth("30px");
-        year.setInputPrompt("yy");
-        year.setMaxLength(4);
-
-        addComponent(year, "year");
-
         month = new TextField();
         month.setBuffered(true);
         month.setImmediate(false);
-        month.setWidth("30px");
+        month.setWidth("50px");
         month.setInputPrompt("mm");
         month.setMaxLength(2);
 
         addComponent(month, "month");
 
+        year = new TextField();
+        year.setBuffered(true);
+        year.setImmediate(false);
+        year.setWidth("50px");
+        year.setInputPrompt("yy");
+        year.setMaxLength(4);
+
+        addComponent(year, "year");
+
         csv = new TextField();
         csv.setBuffered(true);
         csv.setImmediate(false);
-        csv.setWidth("30px");
+        csv.setWidth("50px");
         csv.setInputPrompt("csv");
         csv.setMaxLength(CreditCard.CSV_MAX_LENGTH);
 
         addComponent(csv, "csv");
+
+        fName = new TextField();
+        fName.setBuffered(true);
+        fName.setImmediate(false);
+        fName.setWidth("124px");
+        fName.setCaption("First name");
+
+        addComponent(fName, "fname");
+
+        lName = new TextField();
+        lName.setBuffered(true);
+        lName.setImmediate(false);
+        lName.setWidth("180px");
+        lName.setCaption("Last name");
+
+        addComponent(lName, "lname");
 
         street = new TextField();
         street.setBuffered(true);
@@ -141,13 +158,14 @@ public class CreditCardForm extends CustomLayout{
 
         addComponent(city, "city");
 
-        country = new ComboBox();
-        country.setBuffered(true);
-        country.setImmediate(false);
-        country.setWidth("126px");
-        country.setNullSelectionAllowed(false);
+        state = new ComboBox();
+        state.setBuffered(true);
+        state.setImmediate(false);
+        state.setWidth("130px");
+        state.setInputPrompt("State");
+        state.setNullSelectionAllowed(false);
 
-        addComponent(country, "country");
+        addComponent(state, "state");
 
         createValidators();
     }
@@ -208,16 +226,10 @@ public class CreditCardForm extends CustomLayout{
      * 
      * @param countries
      */
-    public void setAvailableCountries(Container countries) {
-        country.setContainerDataSource(countries);
-
-    }
-
-    /**
-     * Sets the combobox country to the specified country
-     */
-    public void setSelectedCountry(Country country) {
-        this.country.setValue(country);
+    public void setAvailableCountries() {
+        for(State stateName: State.values()) {
+            state.addItem(stateName.toString());
+        }
 
     }
 
@@ -245,10 +257,12 @@ public class CreditCardForm extends CustomLayout{
         year.validate();
         month.validate();
         csv.validate();
+        fName.validate();
+        lName.validate();
         street.validate();
         zip.validate();
         city.validate();
-        country.validate();
+        state.validate();
 
         if (nr1.getValue() == nr1.getNullRepresentation()
                 || ((String) nr1.getValue()).equalsIgnoreCase("")) {
@@ -304,6 +318,21 @@ public class CreditCardForm extends CustomLayout{
             fieldsOk = false;
         } else {
             csv.setRequired(false);
+        }
+
+        if (fName.getValue() == fName.getNullRepresentation()
+                || ((String) fName.getValue()).equals("")) {
+            fName.setRequired(true);
+            fieldsOk = false;
+        } else {
+            fName.setRequired(false);
+        }
+        if (lName.getValue() == lName.getNullRepresentation()
+                || ((String) lName.getValue()).equals("")) {
+            lName.setRequired(true);
+            fieldsOk = false;
+        } else {
+            lName.setRequired(false);
         }
 
         if (street.getValue() == street.getNullRepresentation()
@@ -367,9 +396,8 @@ public class CreditCardForm extends CustomLayout{
         short expYear = new Short(expYearStr);
 
         CreditCardType cctype = (CreditCardType) card.getValue();
-        String cardHolderName = "";
-        //String cardHolderName = (String) fName.getValue() + " "
-        //        + (String) lName.getValue();
+        String cardHolderName = (String) fName.getValue() + " "
+                + (String) lName.getValue();
         short expMonth = new Short((String) month.getValue());
         char[] csvNr = ((String) csv.getValue()).toCharArray();
 
@@ -379,7 +407,6 @@ public class CreditCardForm extends CustomLayout{
         return ccard;
     }
 
-    /*
     public String getFirstNameAsString() {
         return (String) fName.getValue();
     }
@@ -387,7 +414,7 @@ public class CreditCardForm extends CustomLayout{
     public String getLastNameAsString() {
         return (String) lName.getValue();
     }
-    */
+    
     public String getStreetAsString() {
         return (String) street.getValue();
     }
@@ -398,6 +425,10 @@ public class CreditCardForm extends CustomLayout{
 
     public String getCityAsString() {
         return (String) city.getValue();
+    }
+    
+    public String getStateAsString() {
+        return (String) state.getValue();
     }
 
     /*
@@ -468,23 +499,23 @@ public class CreditCardForm extends CustomLayout{
         this.csv = csv;
     }
 
-    /*
+    
     public TextField getfName() {
         return fName;
     }
 
-    public void setfName(TextField fName) {
-        this.fName = fName;
+    public void setfName(String fName) {
+        this.fName.setValue(fName);
     }
 
     public TextField getlName() {
         return lName;
     }
 
-    public void setlName(TextField lName) {
-        this.lName = lName;
+    public void setlName(String lName) {
+        this.lName.setValue(lName);
     }
-    */
+    
     public TextField getStreet() {
         return street;
     }
@@ -509,17 +540,17 @@ public class CreditCardForm extends CustomLayout{
         this.city = city;
     }
 
-    public ComboBox getCountry() {
-        return country;
+    public ComboBox getUSState() {
+        return state;
     }
 
-    public void setCountry(ComboBox country) {
-        this.country = country;
+    public void setUSState(ComboBox state) {
+        this.state = state;
     }
 
     public void cleanUp() {
         card.setContainerDataSource(null);
-        country.setContainerDataSource(null);
+        state.setContainerDataSource(null);
     }
 
 }

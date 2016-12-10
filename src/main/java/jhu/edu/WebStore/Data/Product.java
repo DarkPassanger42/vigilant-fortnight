@@ -79,6 +79,14 @@ public class Product {
     public String getPrice() {
         return Price;
     }
+    
+    public double getActualPrice() {
+        double price = 0.0;
+        
+        price = Double.parseDouble(Price);
+        
+        return price;
+    }
 
     public void setPrice(String price) {
         Price = price;
