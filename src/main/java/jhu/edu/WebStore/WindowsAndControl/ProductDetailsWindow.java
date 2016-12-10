@@ -18,11 +18,18 @@ public class ProductDetailsWindow extends Window {
     public ProductDetailsWindow(Product product){
         super(product.getName());
         center();
+        this.setModal(true);
+
+
+        VerticalLayout mainLayout = new VerticalLayout();
+        mainLayout.setWidth("100%");
 
         // Some basic content for the window
         HorizontalLayout buttonLayout = new HorizontalLayout();
+        buttonLayout.setWidthUndefined();
 
         VerticalLayout content = new VerticalLayout();
+        content.setWidthUndefined();
         content.addComponent(new Label("$" + product.getPrice()));
         content.addComponent(new Label(
                 formatDescription(product.getDescription()), ContentMode.HTML));
@@ -35,6 +42,7 @@ public class ProductDetailsWindow extends Window {
         content.addComponent(image);
 
         content.setMargin(true);
+        content.setWidthUndefined();
 
         // Disable the close button
         setClosable(false);
@@ -58,6 +66,7 @@ public class ProductDetailsWindow extends Window {
                     //get current list of products in the cart
                     SiteUser currentUser = (SiteUser)getSession().getAttribute("SiteUser");
                     ShoppingCart currentShoppingCart = currentUser.getShoppingCart();
+                    product.setQuantity(1);
                     currentShoppingCart.addProduct(product);
                     
                     // Save shopping cart for current user
@@ -79,9 +88,25 @@ public class ProductDetailsWindow extends Window {
         });
         buttonLayout.addComponent(addToCart);
 
-        content.addComponent(buttonLayout);
 
-        setContent(content);
+        //content.addComponent(buttonLayout);
+        mainLayout.addComponent(content);
+        mainLayout.setComponentAlignment(content, Alignment.MIDDLE_CENTER);
+
+        Label spaceLabel = new Label();
+        spaceLabel.setWidth("100%");
+        spaceLabel.setHeight("10px");
+        mainLayout.addComponent(spaceLabel);
+
+        mainLayout.addComponent(buttonLayout);
+        mainLayout.setComponentAlignment(buttonLayout, Alignment.MIDDLE_CENTER);
+
+        Label spaceLabel2 = new Label();
+        spaceLabel2.setWidth("100%");
+        spaceLabel2.setHeight("10px");
+        mainLayout.addComponent(spaceLabel2);
+
+        setContent(mainLayout);
     }
 
     protected String formatDescription(String description) {

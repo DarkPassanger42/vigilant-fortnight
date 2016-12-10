@@ -23,6 +23,7 @@ public class SearchResultsWindow extends Window {
 
         this.parentUI = parentUI;
         this.searchResult = searchResult;
+        this.setModal(true);
 
         this.addFocusListener(new FieldEvents.FocusListener() {
             @Override

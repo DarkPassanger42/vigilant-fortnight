@@ -63,6 +63,7 @@ public class LogInAndOutComponent extends CustomComponent implements Button.Clic
             logInWindow.setHeight("50%");
             logInWindow.setWidth("50%");
             logInWindow.center();
+            logInWindow.setModal(true);
             UI.getCurrent().addWindow(logInWindow);
         }
         else if(clickEvent.getComponent().getCaption().equals("CART")){

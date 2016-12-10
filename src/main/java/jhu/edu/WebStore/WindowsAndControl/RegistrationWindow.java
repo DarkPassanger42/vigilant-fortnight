@@ -25,6 +25,7 @@ public class RegistrationWindow extends Window {
     public RegistrationWindow(WebStoreUI ui){
         super("REGISTRATION");
         parentUI = ui;
+        this.setModal(true);
 
         //Create the user input field
         user = new TextField("User:");

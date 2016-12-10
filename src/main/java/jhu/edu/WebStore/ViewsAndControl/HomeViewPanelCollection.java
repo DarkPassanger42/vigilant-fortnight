@@ -83,6 +83,7 @@ public class HomeViewPanelCollection extends CustomComponent implements MouseEve
         }
 
         ProductDetailsWindow detailsWindow = new ProductDetailsWindow(selectedProduct);
+        detailsWindow.setWidth("50%");
         UI.getCurrent().addWindow(detailsWindow);
     }
 

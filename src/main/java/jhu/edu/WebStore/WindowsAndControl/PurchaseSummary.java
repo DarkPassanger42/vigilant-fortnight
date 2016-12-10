@@ -18,12 +18,17 @@ public class PurchaseSummary extends Window {
         super("Purchase Summary");
         parentUI = ui;
         center();
+        this.setModal(true);
+
+        HorizontalLayout mainLayout = new HorizontalLayout();
+        mainLayout.setWidth("100%");
         
         SiteUser currentUser = (SiteUser)parentUI.getSession().getAttribute("SiteUser");
         String name = currentUser.getFirstName() + " " + currentUser.getLastName();
 
         VerticalLayout content = new VerticalLayout();
         content.setMargin(true);
+        content.setWidthUndefined();
 
         // Disable the close button
         setClosable(false);
@@ -40,7 +45,11 @@ public class PurchaseSummary extends Window {
         });
 
         content.addComponent(ok);
-        setContent(content);
+        mainLayout.addComponent(content);
+        mainLayout.setComponentAlignment(content,Alignment.MIDDLE_CENTER);
+
+
+        setContent(mainLayout);
     }
 
     protected String formatMessage(String name, String address) {

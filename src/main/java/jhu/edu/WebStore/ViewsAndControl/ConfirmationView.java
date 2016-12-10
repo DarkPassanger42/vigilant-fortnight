@@ -29,6 +29,7 @@ public class ConfirmationView extends BaseView {
     private CreditCard creditCard;
     private Button cancelButton;
     private Button submitButton;
+
     private VerticalLayout checkOutLayout = null;
 
     public ConfirmationView(WebStoreUI ui){
@@ -71,7 +72,10 @@ public class ConfirmationView extends BaseView {
         checkOutLayout.setMargin(true);
         
         HorizontalLayout summaryLayout = new HorizontalLayout();
-        summaryLayout.setWidth("100%");
+        summaryLayout.setWidthUndefined();
+
+        HorizontalLayout creditFormLayout = new HorizontalLayout();
+        creditFormLayout.setWidthUndefined();
 
         table = new Table("Products");
         table.setSelectable(false);
@@ -80,15 +84,25 @@ public class ConfirmationView extends BaseView {
         table.setColumnFooter("Price", "");
         
         summaryLayout.addComponent(table);
-        summaryLayout.setComponentAlignment(table, Alignment.TOP_LEFT);
+        //summaryLayout.setComponentAlignment(table, Alignment.TOP_LEFT);
         
         creditCardForm = new CreditCardForm();
         creditCardForm.setAvailableCreditCards();
         creditCardForm.setAvailableCountries();
-        
-        summaryLayout.addComponent(creditCardForm);
-        summaryLayout.setComponentAlignment(creditCardForm, Alignment.TOP_RIGHT);
+
+        creditFormLayout.addComponent(creditCardForm);
+        //summaryLayout.setComponentAlignment(creditCardForm, Alignment.TOP_RIGHT);
         checkOutLayout.addComponent(summaryLayout);
+        checkOutLayout.setComponentAlignment(summaryLayout, Alignment.MIDDLE_CENTER);
+
+        //add spacer
+        Label spaceLabel = new Label();
+        spaceLabel.setWidth("100%");
+        spaceLabel.setHeight("100px");
+        checkOutLayout.addComponent(spaceLabel);
+
+        checkOutLayout.addComponent(creditFormLayout);
+        checkOutLayout.setComponentAlignment(creditFormLayout, Alignment.MIDDLE_CENTER);
         
         cancelButton = new Button("CANCEL",
                 new Button.ClickListener() {
@@ -110,8 +124,8 @@ public class ConfirmationView extends BaseView {
                                     + creditCardForm.getZipAsString();
                             
                             PurchaseSummary summaryWindow = new PurchaseSummary(parentUI, address);
-                            summaryWindow.setHeight("75%");
-                            summaryWindow.setWidth("50%");
+                            summaryWindow.setHeight("300px");
+                            summaryWindow.setWidth("300px");
                             summaryWindow.center();
                             getUI().addWindow(summaryWindow);
                             

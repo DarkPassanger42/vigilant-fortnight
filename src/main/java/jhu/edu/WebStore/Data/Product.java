@@ -12,6 +12,16 @@ public class Product {
     private String Price;
     private String Image;
 
+    public int getQuantity() {
+        return Quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        Quantity = quantity;
+    }
+
+    private int Quantity = 1;   //must be at least one to exist
+
     public String getImage() {
         return Image;
     }

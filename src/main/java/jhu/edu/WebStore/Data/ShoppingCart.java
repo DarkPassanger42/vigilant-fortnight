@@ -40,6 +40,26 @@ public class ShoppingCart {
         }
 
     }
+
+    public Product getProduct(String productID){    //-actual ID  of the product
+
+        Product myProduct = null;
+        boolean productValid = false;
+        for (Product product : products) {      //products - is a LIST of products
+            if(product.getID().equals(productID)){
+                productValid = true;
+                myProduct = product;
+                break;
+            }
+        }
+
+        if(productValid){
+            return myProduct;
+        }
+        else{
+            return null;
+        }
+    }
     
     public void removeAllProducts() {
         while(products.size() > 0) {
@@ -51,7 +71,7 @@ public class ShoppingCart {
         double result = 0.0;
         
         for(Product product : products) {
-            result += product.getActualPrice();
+            result += product.getActualPrice()*product.getQuantity();
         }
         
         return Double.toString(result);
@@ -66,11 +86,13 @@ public class ShoppingCart {
         IndexedContainer indexedContainer = new IndexedContainer();
         indexedContainer.addContainerProperty("Product",String.class,"");
         indexedContainer.addContainerProperty("Price",String.class,"");
+        indexedContainer.addContainerProperty("Quantity",String.class, "");
 
         for (Product product : products) {
             Item item = indexedContainer.addItem(product.getID());  //use product ID as an id in the container
             item.getItemProperty("Product").setValue(product.getName());
             item.getItemProperty("Price").setValue("$"+product.getPrice());
+            item.getItemProperty("Quantity").setValue(String.valueOf(product.getQuantity()));
         }
 
         return indexedContainer;
