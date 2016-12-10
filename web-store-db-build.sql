@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS `webstoredb`.`siteuser` (
   `lastname` varchar(255) NOT NULL,
   `firstname` varchar(255) NOT NULL,
   `purchasedItems` varchar(255) DEFAULT NULL,
+  `purchasedItemsQuantities` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ID_UNIQUE` (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`)

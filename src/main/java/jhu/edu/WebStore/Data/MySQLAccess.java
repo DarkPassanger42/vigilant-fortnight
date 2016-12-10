@@ -286,13 +286,21 @@ public class MySQLAccess {
                 //String creditCardInfo = resultSet.getString("creditCardInfo");
 
                 String purchasedItems = resultSet.getString("purchasedItems");
+                String purchasedItemsQty = resultSet.getString("purchasedItemsQuantities");
+                String[] purchasedItemsQtyArray = purchasedItemsQty.split(",");
                     
                 ShoppingCart cart = new ShoppingCart();
                 if(purchasedItems != null) {
                     if(!purchasedItems.isEmpty()) {
+                        int count = 0;
                         for (String productID : purchasedItems.split(",")) {
                             Product product = getProductById(productID.trim());
-                            if(product != null) { cart.addProduct(product); }
+                            if(product != null)
+                            {
+                                product.setQuantity(Integer.valueOf(purchasedItemsQtyArray[count].trim()));
+                                cart.addProduct(product);
+                                count++;
+                            }
                         }
                     }
                 }
@@ -316,12 +324,17 @@ public class MySQLAccess {
     }
 
     public void saveCart (SiteUser user){
+        System.out.println("save to cart...");
         ShoppingCart cart = user.getShoppingCart();
         String savedCart = "";
         String updateCart = "update siteUser set purchasedItems = ? where username = ?";
+
+        String savedCartQty = "";
+        String updateCartQty = "update siteUser set purchasedItemsQuantities = ? where username = ?";
         
         for(Product item: cart.getItems()) {
             savedCart += item.getID() + ",";
+            savedCartQty += item.getQuantity() + ",";
         }
         
         try {
@@ -329,6 +342,12 @@ public class MySQLAccess {
             preparedStmt.setString(1, savedCart);
             preparedStmt.setString(2, user.getUserName());
             preparedStmt.execute();
+
+            preparedStmt = connect.prepareStatement(updateCartQty);
+            preparedStmt.setString(1, savedCartQty);
+            preparedStmt.setString(2, user.getUserName());
+            preparedStmt.execute();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
